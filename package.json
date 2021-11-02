@@ -21,7 +21,9 @@
     "b4a": "^1.0.0",
     "compact-encoding": "^2.4.1",
     "dht-rpc": "^5.0.0-rc.7",
+    "events": "^3.3.0",
     "hyperswarm": "^3.0.0-rc.0",
+    "streamx": "^2.11.3",
     "ws": "^8.2.2"
   },
   "devDependencies": {

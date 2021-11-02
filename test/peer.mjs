@@ -5,15 +5,28 @@ import { withSwarm } from './helpers/with-swarm.mjs'
 import { withRelay } from './helpers/with-relay.mjs'
 import { withPeer } from './helpers/with-peer.mjs'
 
-test('join a swarm in client mode', (t) =>
+test('client mode', (t) =>
   withDHT((dht) => withSwarm(dht, (swarm) => withRelay(dht, (relay) => withPeer(relay, async (peer) => {
     const topic = Buffer.alloc(32)
 
     const join = t.test('join')
     join.plan(1)
 
+    const io = t.test('read and write')
+    io.plan(2)
+
     peer.on('connection', (socket, info) => {
       join.alike(info.publicKey, swarm.keyPair.publicKey)
+
+      socket.write('ping')
+      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+    })
+
+    swarm.on('connection', (socket, info) => {
+      socket.on('data', (data) => {
+        io.alike(data.toString(), 'ping')
+        socket.write('pong')
+      })
     })
 
     const discovery = swarm.join(topic, { client: false })
@@ -23,18 +36,32 @@ test('join a swarm in client mode', (t) =>
     await peer.flush()
 
     await join
+    await io
   }))))
 )
 
-test.solo('join a swarm in server mode', (t) =>
+test('server mode', (t) =>
   withDHT((dht) => withSwarm(dht, (swarm) => withRelay(dht, (relay) => withPeer(relay, async (peer) => {
     const topic = Buffer.alloc(32)
 
     const join = t.test('join')
     join.plan(1)
 
+    const io = t.test('read and write')
+    io.plan(2)
+
     peer.on('connection', (socket, info) => {
       join.alike(info.publicKey, swarm.keyPair.publicKey)
+
+      socket.write('ping')
+      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+    })
+
+    swarm.on('connection', (socket, info) => {
+      socket.on('data', (data) => {
+        io.alike(data.toString(), 'ping')
+        socket.write('pong')
+      })
     })
 
     const discovery = peer.join(topic, { client: false })
@@ -44,5 +71,6 @@ test.solo('join a swarm in server mode', (t) =>
     await swarm.flush()
 
     await join
+    await io
   }))))
 )
