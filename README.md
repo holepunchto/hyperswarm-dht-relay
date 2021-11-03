@@ -41,7 +41,7 @@ _Empty_
 
 1.  `fixed32` The public key of the proxied peer
 1.  `fixed32` The public key of the remote peer
-1.  `buffer` The Noise handshake hash
+1.  `fixed64` The Noise handshake hash
 
 #### `Data` (`8`)
 
