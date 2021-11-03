@@ -39,11 +39,13 @@ _Empty_
 
 #### `Connection` (`7`)
 
-1.  `fixed32` The public key of the peer
+1.  `fixed32` The public key of the proxied peer
+1.  `fixed32` The public key of the remote peer
+1.  `buffer` The Noise handshake hash
 
 #### `Data` (`8`)
 
-1.  `fixed32` The public key of the sending peer
+1.  `fixed32` The public key of the remote peer
 2.  `buffer` The data sent
 
 #### `Flush` (`9`)

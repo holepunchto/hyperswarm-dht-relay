@@ -17,10 +17,7 @@ export async function withDHT (cb) {
   try {
     await cb(dht)
   } finally {
+    for (const dht of aux) await dht.destroy()
     await dht.destroy()
-
-    for (const dht of aux) {
-      await dht.destroy()
-    }
   }
 }

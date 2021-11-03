@@ -14,7 +14,7 @@ test('core replication', (t) =>
     replication.plan(1)
 
     peer.on('connection', async (socket, info) => {
-      socket.pipe(localCore.replicate(true)).pipe(socket)
+      localCore.replicate(socket)
 
       replication.alike(
         [
@@ -29,7 +29,7 @@ test('core replication', (t) =>
     })
 
     swarm.on('connection', async (socket, info) => {
-      socket.pipe(remoteCore.replicate(false)).pipe(socket)
+      remoteCore.replicate(socket)
 
       await remoteCore.append(['hello', 'world'])
       await replication
