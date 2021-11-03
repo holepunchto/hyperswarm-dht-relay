@@ -60,6 +60,13 @@ _Empty_
     - `topic`: `1`
 2.  (if `topic` is set) `fixed32` The topic that was flushed
 
+#### `Refresh` (`11`)
+
+1.  `uint8` Flags
+    - `server`: `1`
+    - `client`: `2`
+2.  `fixed32` The topic to refresh
+
 ## License
 
 ISC
