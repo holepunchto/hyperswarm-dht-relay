@@ -74,3 +74,18 @@ test('server mode', (t) =>
     await io
   }))))
 )
+
+test('direct connection', (t) =>
+  withDHT((dht) => withSwarm(dht, (swarm) => withRelay(dht, (relay) => withPeer(relay, async (peer) => {
+    await swarm.listen()
+
+    const connection = peer.connect(swarm.keyPair.publicKey)
+
+    const connect = t.test('connect')
+    connect.plan(1)
+
+    connection.on('open', () => connect.pass())
+
+    await connect
+  }))))
+)
