@@ -4,7 +4,7 @@ import { Relay } from '../../lib/relay.js'
 import * as ws from '../../ws.js'
 
 export async function withRelay (dht, cb) {
-  const relay = Relay.fromTransport(ws, new WebSocketServer({ port: 0 }), dht)
+  const relay = Relay.fromTransport(ws, dht, new WebSocketServer({ port: 0 }))
   await relay.ready()
 
   try {
