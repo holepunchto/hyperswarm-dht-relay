@@ -22,50 +22,37 @@ _Empty_
 
 _Empty_
 
-#### `Listen` (`4`)
+#### `Connect` (`4`)
 
-_Empty_
+1.  `fixed32` The public key of the remote peer
 
-#### `Join` (`5`)
+#### `Connection` (`5`)
 
-1.  `uint8` Flags
-    - `server`: `1`
-    - `client`: `2`
-2.  `fixed32` The topic to join
-
-#### `Leave` (`6`)
-
-1.  `fixed32` The topic to leave
-
-#### `Connection` (`7`)
-
-1.  `fixed32` The public key of the proxied peer
+1.  `fixed32` The public key of the peer
 1.  `fixed32` The public key of the remote peer
 1.  `fixed64` The Noise handshake hash
 
-#### `Data` (`8`)
+#### `Destroy` (`6`)
+
+1.  `fixed32` The public key of the remote peer
+
+#### `Listen` (`7`)
+
+_Empty_
+
+#### `Listening` (`8`)
+
+1.  `fixed32` The public key of the server
+2.  `ipv4Address` The address of the server
+
+#### `Close` (`9`)
+
+1.  `fixed32` The public key of the server
+
+#### `Data` (`10`)
 
 1.  `fixed32` The public key of the remote peer
 2.  `buffer` The data sent
-
-#### `Flush` (`9`)
-
-1.  `uint8` Flags
-    - `topic`: `1`
-2.  (if `topic` is set) `fixed32` The topic to flush
-
-#### `Flushed` (`10`)
-
-1.  `uint8` Flags
-    - `topic`: `1`
-2.  (if `topic` is set) `fixed32` The topic that was flushed
-
-#### `Refresh` (`11`)
-
-1.  `uint8` Flags
-    - `server`: `1`
-    - `client`: `2`
-2.  `fixed32` The topic to refresh
 
 ## License
 
