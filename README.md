@@ -2,7 +2,10 @@
 
 > :warning: This project is in its infancy and is therefore considered experimental.
 
-Relaying the Hyperswarm DHT over other transport protocols to bring decentralized networking to everyone.
+Relaying the Hyperswarm DHT over other transport protocols to bring decentralized networking to everyone. The supported transport protocols are:
+
+- [TCP](https://nodejs.org/api/net.html) (default)
+- [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
 ## Protocol
 
