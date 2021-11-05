@@ -39,7 +39,6 @@ test('core replication', (t) =>
       )
     })
 
-    await replication
-    await server.close()
+    await replication.then(() => server.close())
   })))))
 )

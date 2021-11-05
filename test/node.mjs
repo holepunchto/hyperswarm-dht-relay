@@ -31,7 +31,7 @@ test('client mode', (t) =>
       })
     })
 
-    await Promise.all([connect, io])
+    await Promise.all([connect, io]).then(() => server.close())
   })))
 )
 
@@ -62,6 +62,6 @@ test('server mode', (t) =>
       })
     })
 
-    await Promise.all([connect, io])
+    await Promise.all([connect, io]).then(() => server.close())
   })))
 )
