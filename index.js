@@ -1,9 +1,9 @@
 const { Protocol } = require('./lib/protocol')
-const { Peer } = require('./lib/peer')
+const { Node } = require('./lib/node')
 const { Relay } = require('./lib/relay')
 
 module.exports = {
   Protocol,
-  Peer,
+  Node,
   Relay
 }
