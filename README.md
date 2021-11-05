@@ -2,7 +2,7 @@
 
 > :warning: This project is in its infancy and is therefore considered experimental.
 
-Relaying Hyperswarm over WebSockets to bring decentralized networking to everyone.
+Relaying the Hyperswarm DHT over WebSockets to bring decentralized networking to everyone.
 
 ## Protocol
 

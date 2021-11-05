@@ -2,18 +2,29 @@ import test from 'brittle'
 
 import { withCore } from './helpers/with-core.mjs'
 import { withDHT } from './helpers/with-dht.mjs'
-import { withSwarm } from './helpers/with-swarm.mjs'
 import { withRelay } from './helpers/with-relay.mjs'
-import { withPeer } from './helpers/with-peer.mjs'
+import { withNode } from './helpers/with-node.mjs'
 
 test('core replication', (t) =>
-  withDHT((dht) => withSwarm(dht, (swarm) => withRelay(dht, (relay) => withPeer(relay, (peer) => withCore((remoteCore) => withCore(remoteCore.key, async (localCore) => {
-    const topic = Buffer.alloc(32, 'topic')
-
+  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, (node) => withCore((remoteCore) => withCore(remoteCore.key, async (localCore) => {
     const replication = t.test('replication')
     replication.plan(1)
 
-    peer.on('connection', async (socket, info) => {
+    const server = dht.createServer()
+    await server.listen()
+
+    server.on('connection', async (socket) => {
+      remoteCore.replicate(socket)
+
+      await remoteCore.append(['hello', 'world'])
+      await replication
+
+      socket.end()
+    })
+
+    const socket = node.connect(server.address().publicKey)
+
+    socket.on('open', async () => {
       localCore.replicate(socket)
 
       replication.alike(
@@ -28,21 +39,7 @@ test('core replication', (t) =>
       )
     })
 
-    swarm.on('connection', async (socket, info) => {
-      remoteCore.replicate(socket)
-
-      await remoteCore.append(['hello', 'world'])
-      await replication
-
-      socket.end()
-    })
-
-    const discovery = swarm.join(topic, { client: false })
-    await discovery.flushed()
-
-    peer.join(topic, { server: false })
-    await peer.flush()
-
     await replication
-  }))))))
+    await server.close()
+  })))))
 )
