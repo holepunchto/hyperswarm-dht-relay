@@ -13,6 +13,11 @@ A reference implementation of the relay protocol can be found in the [`lib/proto
 
 ### Messages
 
+#### `Handshake` (`0`)
+
+1.  `fixed32` The public key of the peer
+2.  `fixed32` The secret key of the peer
+
 #### `Error` (`1`)
 
 1.  `string` The error message
@@ -27,21 +32,24 @@ _Empty_
 
 #### `Connect` (`4`)
 
+1.  `fixed32` The public key of the connection
+2.  `fixed32` The secret key of the connection
 1.  `fixed32` The public key of the remote peer
 
 #### `Connection` (`5`)
 
-1.  `fixed32` The public key of the peer
-1.  `fixed32` The public key of the remote peer
-1.  `fixed64` The Noise handshake hash
+1.  `fixed32` The public key of the connection
+2.  `fixed32` The public key of the remote peer
+3.  `fixed64` The Noise handshake hash
 
 #### `Destroy` (`6`)
 
-1.  `fixed32` The public key of the remote peer
+1.  `fixed32` The public key of the connection
 
 #### `Listen` (`7`)
 
-_Empty_
+1.  `fixed32` The public key of the server
+2.  `fixed32` The secret key of the server
 
 #### `Listening` (`8`)
 
@@ -54,7 +62,7 @@ _Empty_
 
 #### `Data` (`10`)
 
-1.  `fixed32` The public key of the remote peer
+1.  `fixed32` The public key of the connection
 2.  `buffer` The data sent
 
 ## License
