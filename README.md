@@ -7,6 +7,38 @@ Relaying the Hyperswarm DHT over other transport protocols to bring decentralize
 - [TCP](https://nodejs.org/api/net.html) (default)
 - [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
+## Installation
+
+```sh
+npm install @hyperswarm/dht-relay
+```
+
+## Usage
+
+To construct a WebSocket relay:
+
+```js
+import { WebSocketServer } from 'ws'
+import DHT from '@hyperswarm/dht'
+import { Relay } from '@hyperswarm/dht-relay'
+import ws from '@hyperswarm/dht-relay/ws'
+
+const node = new DHT()
+
+const relay = Relay.fromTransport(ws, dht, new WebSocketServer({ port: 8080 }))
+```
+
+To connect to a WebSocket relay:
+
+```js
+import { Node } from '@hyperswarm/dht-relay'
+import ws from '@hyperswarm/dht-relay/ws'
+
+const node = Node.fromTransport(ws, new WebSocket(`ws://127.0.0.1:8080`))
+```
+
+From here, the API matches that of the Hyperswarm DHT: <https://github.com/hyperswarm/dht#api>
+
 ## Protocol
 
 A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module.
@@ -16,7 +48,7 @@ A reference implementation of the relay protocol can be found in the [`lib/proto
 #### `Handshake` (`0`)
 
 1.  `fixed32` The public key of the peer
-2.  `fixed64` The secret key of the peer
+2.  `fixed64` The secret key
 
 #### `Error` (`1`)
 
@@ -33,7 +65,7 @@ _Empty_
 #### `Connect` (`4`)
 
 1.  `fixed32` The public key of the connection
-2.  `fixed64` The secret key of the connection
+2.  `fixed64` The secret key
 1.  `fixed32` The public key of the remote peer
 
 #### `Connection` (`5`)
@@ -49,7 +81,7 @@ _Empty_
 #### `Listen` (`7`)
 
 1.  `fixed32` The public key of the server
-2.  `fixed64` The secret key of the server
+2.  `fixed64` The secret key
 
 #### `Listening` (`8`)
 
