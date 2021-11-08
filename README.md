@@ -60,10 +60,42 @@ _Empty_
 
 1.  `fixed32` The public key of the server
 
-#### `Data` (`10`)
+#### `Closed` (`10`)
+
+1.  `fixed32` The public key of the server
+
+#### `Data` (`11`)
 
 1.  `fixed32` The public key of the connection
 2.  `buffer` The data sent
+
+#### `Result` (`12`)
+
+1.  `uint` The query ID
+2.  `raw` THe query specific data
+
+#### `Finished` (`13`)
+
+1.  `uint` The query ID
+
+#### `Lookup` (`14`)
+
+1.  `uint` The query ID
+2.  `fixed32` The topic to look up
+
+#### `Announce` (`15`)
+
+1.  `uint` The query ID
+2.  `fixed32` The topic to announce
+3.  `fixed32` The public key to announce on
+4.  `fixed64` The secret key
+
+#### `Unannounce` (`15`)
+
+1.  `uint` The query ID
+2.  `fixed32` The topic to unannounce
+3.  `fixed32` The public key that was announced on
+4.  `fixed64` The secret key
 
 ## License
 
