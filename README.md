@@ -72,7 +72,7 @@ _Empty_
 #### `Result` (`12`)
 
 1.  `uint` The query ID
-2.  `raw` THe query specific data
+2.  `raw` The query specific data
 
 #### `Finished` (`13`)
 
