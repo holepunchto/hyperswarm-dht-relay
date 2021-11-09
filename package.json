@@ -2,7 +2,11 @@
   "name": "dht-relay",
   "version": "0.0.0",
   "description": "Relaying the Hyperswarm DHT over other transport protocols to bring decentralized networking to everyone",
-  "main": "index.js",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./ws": "./ws.js"
+  },
   "scripts": {
     "test": "standard && brittle test/*.mjs"
   },
