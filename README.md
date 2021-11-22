@@ -99,7 +99,7 @@ _Empty_
 #### `Data` (`11`)
 
 1.  `fixed32` The public key of the connection
-2.  `buffer` The data sent
+2.  `array(buffer)` The data sent
 
 #### `Result` (`12`)
 
