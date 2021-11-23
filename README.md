@@ -47,7 +47,7 @@ A reference implementation of the relay protocol can be found in the [`lib/proto
 
 ### Messages
 
-All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
+Each message is prefixed with its `uint` type listed in parentheses. All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
 
 #### `Handshake` (`0`)
 
@@ -90,7 +90,7 @@ _Empty_
 #### `Listening` (`8`)
 
 1.  `fixed32` The public key of the server
-2.  `ipv4Address` The address of the server
+2.  [`ipv4Address`][ipv4Address] The address of the server
 
 #### `Close` (`9`)
 
@@ -136,3 +136,5 @@ _Empty_
 ## License
 
 ISC
+
+[ipv4Address]: https://github.com/compact-encoding/compact-encoding-net#ipv4address
