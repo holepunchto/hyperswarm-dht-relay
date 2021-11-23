@@ -41,9 +41,13 @@ From here, the API matches that of the Hyperswarm DHT: <https://github.com/hyper
 
 ## Protocol
 
+> :warning: The protocol currently exchanges public **and** private keys between peers and the relay due to limitations in the DHT. In the future, only public keys will be exchanged and the relay will instead forward the Noise handshake request to peers for them to perform using their private key.
+
 A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module.
 
 ### Messages
+
+All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
 
 #### `Handshake` (`0`)
 
