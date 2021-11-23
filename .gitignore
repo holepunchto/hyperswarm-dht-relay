@@ -2,4 +2,3 @@ node_modules/
 coverage/
 scratch/
 package-lock.json
-*yarn*

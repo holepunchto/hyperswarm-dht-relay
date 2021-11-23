@@ -51,8 +51,8 @@ Each message is prefixed with its `uint` type listed in parentheses. All types a
 
 #### `Handshake` (`0`)
 
-1.  `fixed32` The public key of the peer
-2.  `fixed64` The secret key
+1.  `fixed(32)` The public key of the peer
+2.  `fixed(64)` The secret key
 
 #### `Error` (`1`)
 
@@ -68,70 +68,74 @@ _Empty_
 
 #### `Connect` (`4`)
 
-1.  `fixed32` The public key of the connection
-2.  `fixed64` The secret key
-1.  `fixed32` The public key of the remote peer
+1.  `fixed(4)` The ID of the socket
+2.  `fixed(32)` The public key of the connection
+3.  `fixed(64)` The secret key
+4.  `fixed(32)` The public key of the remote peer
 
 #### `Connection` (`5`)
 
-1.  `fixed32` The public key of the connection
-2.  `fixed32` The public key of the remote peer
-3.  `fixed64` The Noise handshake hash
+1.  `fixed(4)` The ID of the socket
+2.  `fixed(32)` The public key of the connection
+3.  `fixed(32)` The public key of the remote peer
+4.  `fixed(64)` The Noise handshake hash
 
 #### `Destroy` (`6`)
 
-1.  `fixed32` The public key of the connection
+1.  `fixed(4)` The ID of the socket
+2.  `fixed(32)` The public key of the connection
 
 #### `Listen` (`7`)
 
-1.  `fixed32` The public key of the server
-2.  `fixed64` The secret key
+1.  `fixed(32)` The public key of the server
+2.  `fixed(64)` The secret key
 
 #### `Listening` (`8`)
 
-1.  `fixed32` The public key of the server
+1.  `fixed(32)` The public key of the server
 2.  [`ipv4Address`][ipv4Address] The address of the server
 
 #### `Close` (`9`)
 
-1.  `fixed32` The public key of the server
+1.  `fixed(32)` The public key of the server
 
 #### `Closed` (`10`)
 
-1.  `fixed32` The public key of the server
+1.  `fixed(32)` The public key of the server
 
 #### `Data` (`11`)
 
-1.  `fixed32` The public key of the connection
-2.  `array(buffer)` The data sent
+1.  `fixed(4)` The ID of the socket
+2.  `fixed(32)` The public key of the connection
+3.  `array(buffer)` The data sent
 
 #### `Result` (`12`)
 
-1.  `uint` The query ID
+1.  `fixed(4)` The query ID
 2.  `raw` The query specific data
 
 #### `Finished` (`13`)
 
-1.  `uint` The query ID
+1.  `fixed(4)` The query ID
 
 #### `Lookup` (`14`)
 
-1.  `uint` The query ID
-2.  `fixed32` The topic to look up
+1.  `fixed(4)` The query ID
+2.  `fixed(32)` The topic to look up
 
 #### `Announce` (`15`)
 
-1.  `uint` The query ID
-2.  `fixed32` The topic to announce
-3.  `fixed32` The public key to announce on
-4.  `fixed64` The secret key
+1.  `fixed(4)` The query ID
+2.  `fixed(32)` The topic to announce
+3.  `fixed(32)` The public key to announce on
+4.  `fixed(64)` The secret key
 
 #### `Unannounce` (`15`)
 
-1.  `uint` The query ID
-2.  `fixed32` The topic to unannounce
-3.  `fixed32` The public key that was announced on
-4.  `fixed64` The secret key
+1.  `fixed(4)` The query ID
+2.  `fixed(32)` The topic to unannounce
+3.  `fixed(32)` The public key that was announced on
+4.  `fixed(64)` The secret key
 
 ## License
 
