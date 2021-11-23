@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hypercore-skunkworks/dht-relay.git"
+    "url": "git+https://github.com/hyperswarm/dht-relay.git"
   },
   "author": "Kasper Isager Dalsgarð <kasper@funktionel.co>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hypercore-skunkworks/dht-relay/issues"
+    "url": "https://github.com/hyperswarm/dht-relay/issues"
   },
-  "homepage": "https://github.com/hypercore-skunkworks/dht-relay#readme",
+  "homepage": "https://github.com/hyperswarm/dht-relay#readme",
   "dependencies": {
     "b4a": "^1.1.4",
     "compact-encoding": "^2.4.1",
