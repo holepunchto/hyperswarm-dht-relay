@@ -47,7 +47,7 @@ A reference implementation of the relay protocol can be found in the [`lib/proto
 
 ### Messages
 
-Each message is prefixed with its `uint` type listed in parentheses. All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
+Each message is prefixed with its `uint24` length and its `uint` type listed in parentheses. All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
 
 #### `Handshake` (`0`)
 
