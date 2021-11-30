@@ -23,7 +23,7 @@ import DHT from '@hyperswarm/dht'
 import { Relay } from '@hyperswarm/dht-relay'
 import ws from '@hyperswarm/dht-relay/ws'
 
-const node = new DHT()
+const dht = new DHT()
 
 const relay = Relay.fromTransport(ws, dht, new WebSocketServer({ port: 8080 }))
 ```
