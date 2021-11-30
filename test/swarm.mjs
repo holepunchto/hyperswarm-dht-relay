@@ -5,7 +5,7 @@ import { withNode } from './helpers/with-node.mjs'
 import { withRelay } from './helpers/with-relay.mjs'
 import { withSwarm } from './helpers/with-swarm.mjs'
 
-test.skip('swarm join peer', (t) =>
+test('swarm join peer', (t) =>
   withDHT((dht) => withRelay(dht, (relay) => withNode(relay, (node) => withSwarm(node, async (swarm) => {
     const join = t.test('join, write, and close')
     join.plan(3)
