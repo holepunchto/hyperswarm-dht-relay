@@ -49,93 +49,104 @@ A reference implementation of the relay protocol can be found in the [`lib/proto
 
 Each message is prefixed with its `uint24` length and its `uint` type listed in parentheses. All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
 
-#### `Handshake` (`0`)
+#### `handshake` (`0`)
 
 1.  `fixed(32)` The public key of the peer
 2.  `fixed(64)` The secret key
 
-#### `Error` (`1`)
+#### `error` (`1`)
 
 1.  `string` The error message
 
-#### `Ping` (`2`)
+#### `ping` (`2`)
 
 _Empty_
 
-#### `Pong` (`3`)
+#### `pong` (`3`)
 
 _Empty_
 
-#### `Connect` (`4`)
+#### `connect` (`4`)
 
 1.  `fixed(4)` The ID of the socket
 2.  `fixed(32)` The public key of the connection
 3.  `fixed(64)` The secret key
 4.  `fixed(32)` The public key of the remote peer
 
-#### `Connection` (`5`)
+#### `connection` (`5`)
 
 1.  `fixed(4)` The ID of the socket
 2.  `fixed(32)` The public key of the connection
 3.  `fixed(32)` The public key of the remote peer
 4.  `fixed(64)` The Noise handshake hash
 
-#### `Destroy` (`6`)
+#### `destroy` (`6`)
 
 1.  `fixed(4)` The ID of the socket
 2.  `fixed(32)` The public key of the connection
 
-#### `Listen` (`7`)
+#### `listen` (`7`)
 
 1.  `fixed(32)` The public key of the server
 2.  `fixed(64)` The secret key
 
-#### `Listening` (`8`)
+#### `listening` (`8`)
 
 1.  `fixed(32)` The public key of the server
 2.  [`ipv4Address`][ipv4Address] The address of the server
 
-#### `Close` (`9`)
+#### `close` (`9`)
 
 1.  `fixed(32)` The public key of the server
 
-#### `Closed` (`10`)
+#### `closed` (`10`)
 
 1.  `fixed(32)` The public key of the server
 
-#### `Data` (`11`)
+#### `data` (`11`)
 
 1.  `fixed(4)` The ID of the socket
 2.  `fixed(32)` The public key of the connection
 3.  `array(buffer)` The data sent
 
-#### `Result` (`12`)
+#### `result` (`12`)
 
 1.  `fixed(4)` The query ID
 2.  `raw` The query specific data
 
-#### `Finished` (`13`)
+#### `finished` (`13`)
 
 1.  `fixed(4)` The query ID
 
-#### `Lookup` (`14`)
+#### `lookup` (`14`)
 
 1.  `fixed(4)` The query ID
 2.  `fixed(32)` The topic to look up
 
-#### `Announce` (`15`)
+#### `announce` (`15`)
 
 1.  `fixed(4)` The query ID
 2.  `fixed(32)` The topic to announce
 3.  `fixed(32)` The public key to announce on
 4.  `fixed(64)` The secret key
 
-#### `Unannounce` (`15`)
+#### `unannounce` (`16`)
 
 1.  `fixed(4)` The query ID
 2.  `fixed(32)` The topic to unannounce
 3.  `fixed(32)` The public key that was announced on
 4.  `fixed(64)` The secret key
+
+#### `sign` (`17`)
+
+1.  `fixed(4)` The request ID
+2.  `fixed(32)` The public key of the signer
+3.  `buffer` The buffer to sign
+
+#### `signature` (`18`)
+
+1.  `fixed(4)` The request ID
+2.  `buffer` The signature of the signer
 
 ## License
 
