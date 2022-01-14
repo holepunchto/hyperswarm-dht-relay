@@ -7,7 +7,7 @@ import { withNode } from './helpers/with-node.mjs'
 test('client mode', (t) =>
   withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
     const connect = t.test('connect')
-    connect.plan(1)
+    connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
@@ -18,6 +18,7 @@ test('client mode', (t) =>
     const socket = node.connect(server.address().publicKey)
 
     socket.on('open', () => {
+      connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
       socket.write('ping')
@@ -25,6 +26,44 @@ test('client mode', (t) =>
     })
 
     server.on('connection', (socket) => {
+      connect.pass('server connected')
+
+      socket.on('data', (data) => {
+        io.alike(data.toString(), 'ping')
+        socket.write('pong')
+      })
+    })
+
+    await Promise.all([connect, io]).then(() => server.close())
+  })))
+)
+
+test('noncustodial client mode', (t) =>
+  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, async (node) => {
+    const connect = t.test('connect')
+    connect.plan(3)
+
+    const io = t.test('read and write')
+    io.plan(2)
+
+    const server = dht.createServer()
+    await server.listen()
+
+    const socket = node.connect(server.address().publicKey)
+
+    socket.on('open', () => {
+      connect.pass('client connected')
+      connect.alike(socket.remotePublicKey, server.address().publicKey)
+
+      socket.write('ping')
+      socket.once('data', (data) => {
+        io.alike(data.toString(), 'pong')
+      })
+    })
+
+    server.on('connection', (socket) => {
+      connect.pass('server connected')
+
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
         socket.write('pong')
@@ -38,7 +77,7 @@ test('client mode', (t) =>
 test('server mode', (t) =>
   withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
     const connect = t.test('connect')
-    connect.plan(1)
+    connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
@@ -49,6 +88,7 @@ test('server mode', (t) =>
     const socket = dht.connect(server.address().publicKey)
 
     socket.on('open', () => {
+      connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
       socket.write('ping')
@@ -56,6 +96,8 @@ test('server mode', (t) =>
     })
 
     server.on('connection', (socket) => {
+      connect.pass('server connected')
+
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
         socket.write('pong')

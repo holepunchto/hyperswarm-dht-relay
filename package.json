@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/hyperswarm/dht-relay#readme",
   "dependencies": {
+    "@hyperswarm/dht": "^5.0.12",
+    "@hyperswarm/secret-stream": "^5.1.4",
     "b4a": "^1.1.4",
     "compact-encoding": "^2.4.1",
     "compact-encoding-net": "^1.0.1",
@@ -29,7 +31,6 @@
     "streamx": "^2.11.3"
   },
   "devDependencies": {
-    "@hyperswarm/dht": "^5.0.0",
     "brittle": "^1.3.5",
     "hypercore": "^10.0.0-alpha.10",
     "hyperswarm": "^3.0.1",
