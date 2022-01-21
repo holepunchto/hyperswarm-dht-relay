@@ -1,0 +1,25 @@
+sequenceDiagram
+  participant N as Node
+  participant R as Relay
+
+  note left of N: connecting = Map { 1: { Socket { alias: 1, handshake: Handshake { } } } }
+
+  N->>R: connect { alias: 1, publicKey: <Buffer ...>, remotePublicKey: <Buffer ... > }
+
+  note right of R: connections = Map { 1: { Socket { alias: 2, handshake: Handshake { } } } }
+
+  R->>N: handshakeSend { alias: 2, remoteAlias: 1, data: <Buffer ... > }
+
+  note left of N: connections = Map { 2: { Socket { alias: 1, handshake: Handshake { } } } }
+
+  N-->>R: handshakeReply { alias: 1, data: <Buffer ...> }
+
+  R->>N: handshakeReceive { alias: 2, data: <Buffer ...> }
+
+  N-->>R: handshakeReply { alias: 1, data: <Buffer ...> }
+
+  alt
+    R-->>N: destroy { remoteAlias: 1, error: '<message>' }
+  else
+    R-->>N: connected { alias: 2, remoteAlias: 1  }
+  end

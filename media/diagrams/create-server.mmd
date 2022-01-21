@@ -1,0 +1,55 @@
+sequenceDiagram
+  participant N as Node
+  participant R as Relay
+
+  note left of N: opening = Map { 1: { Server { alias: 1 } } }
+
+  N->>R: listen { alias: 1, publicKey: <Buffer ...> }
+
+  note right of R: servers = Map { 1: Server { alias: 2 } }
+
+  R-->>N: listening { alias: 2, remoteAlias: 1, host: '<ip>', port: <port> }
+
+  note left of N: servers = Map { 2: Server { alias: 1 } }
+
+  loop
+    note right of R: connecting = Map { 3: { Server { alias: 3 } } }
+
+    R->>N: connection { alias: 3, serverAlias: 2, remotePublicKey: <Buffer ...> }
+
+    alt
+      N-->>R: destroy { remoteAlias: 3 }
+    else
+      note left of N: connections = Map { 3: Socket { alias: 4 } }
+
+      N-->>R: accept { alias: 4, remoteAlias: 3 }
+
+      note right of R: connections = Map { 4: Socket { alias: 3 } }
+
+      R->>N: connected { alias: 3 }
+
+      par
+        loop
+          N->>R: data { alias: 4, data: [<Buffer ...>] }
+        end
+
+        N->>R: end { alias: 4 }
+      and
+        loop
+          R->>N: data { alias: 3, data: [<Buffer ...>] }
+        end
+
+        R->>N: end { alias: 3 }
+      end
+
+      alt
+        N->>R: destroy { alias: 4, error: null | '<message>' }
+      else
+        R->>N: destroy { alias: 3, error: null | '<message>' }
+      end
+    end
+  end
+
+  N->>R: close { alias: 1 }
+
+  R-->>N: closed { alias: 2 }
