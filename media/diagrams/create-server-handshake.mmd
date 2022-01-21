@@ -17,7 +17,7 @@ sequenceDiagram
 
     R->>N: connection { alias: 3, serverAlias: 2 }
 
-    R->>N: handshakeReceive { alias: 3, data: <Buffer ...> }
+    R->>N: noiseReceive { alias: 3, data: <Buffer ...> }
 
     alt
       N-->>R: destroy { remoteAlias: 3 }
@@ -28,11 +28,11 @@ sequenceDiagram
 
       note right of R: connections = Map { 4: Socket { alias: 3, handshake: Handshake { } } }
 
-      N-->>R: handshakeReply { alias: 4, data: <Buffer ...>, remotePublicKey: <Buffer ...> }
+      N-->>R: noiseReply { alias: 4, data: <Buffer ...>, remotePublicKey: <Buffer ...> }
 
-      R->>N: handshakeSend { alias: 3, data: <Buffer ...> }
+      R->>N: noiseSend { alias: 3, data: <Buffer ...> }
 
-      N-->>R: handshakeReply { alias: 4, data: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
+      N-->>R: noiseReply { alias: 4, data: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
 
       R->>N: connected { alias: 3 }
     end
