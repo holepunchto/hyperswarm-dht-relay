@@ -4,7 +4,7 @@ sequenceDiagram
 
   note left of N: opening = Map { 1: { Server { alias: 1 } } }
 
-  N->>R: listen { alias: 1, publicKey: <Buffer ...> }
+  N->>R: listen { alias: 1, publicKey: <Buffer ...>, secretKey: <Buffer ...> }
 
   note right of R: servers = Map { 1: Server { alias: 2 } }
 
@@ -26,7 +26,7 @@ sequenceDiagram
 
       note right of R: connections = Map { 4: Socket { alias: 3 } }
 
-      R->>N: connected { alias: 3 }
+      R->>N: connected { alias: 3, handshakeHash: <Buffer ...> }
 
       par
         loop

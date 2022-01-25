@@ -4,14 +4,14 @@ sequenceDiagram
 
   note left of N: connecting = Map { 1: { Socket { alias: 1 } } }
 
-  N->>R: connect { alias: 1, publicKey: <Buffer ...>, remotePublicKey: <Buffer ... > }
+  N->>R: connect { alias: 1, publicKey: <Buffer ...>, secretKey: <Buffer ...>, remotePublicKey: <Buffer ... > }
 
   alt
     R-->>N: destroy { remoteAlias: 1, error: '<message>' }
   else
     note right of R: connections = Map { 1: Socket { alias: 2 } }
 
-    R-->>N: connected { alias: 2, remoteAlias: 1  }
+    R-->>N: connected { alias: 2, remoteAlias: 1, handshakeHash: <Buffer ...> }
 
     note left of N: connections = Map { 2: Socket { alias: 1 } }
 
