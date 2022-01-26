@@ -13,7 +13,7 @@ sequenceDiagram
   note left of N: servers = Map { 2: Server { alias: 1 } }
 
   loop
-    note right of R: connecting = Map { 3: { Server { alias: 3 } } }
+    note right of R: connecting = Map { 3: { Socket { alias: 3 } } }
 
     R->>N: connection { alias: 3, serverAlias: 2, remotePublicKey: <Buffer ...> }
 

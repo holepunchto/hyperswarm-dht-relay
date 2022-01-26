@@ -13,26 +13,30 @@ sequenceDiagram
   note left of N: servers = Map { 2: Server { alias: 1 } }
 
   loop
-    note right of R: connecting = Map { 3: { Server { alias: 3, handshake: Handshake { } } } }
+    note right of R: handshakes = Map { 3: { Handshake { } } } }
 
-    R->>N: connection { alias: 3, serverAlias: 2 }
+    R->>N: noiseReceive { isInitiator: false, id: 3, serverAlias: 2, data: <Buffer ...> }
 
-    R->>N: noiseReceive { alias: 3, data: <Buffer ...> }
+    note left of N: handshakes = Map { 3: { Handshake { } } }
+
+    N-->>R: noiseReply { isInitiator: false, complete: false, id: 3, data: <Buffer ...>, remotePublicKey: <Buffer ...> }
+
+    R->>N: noiseSend { isInitiator: false, id: 3, data: <Buffer ...> }
+
+    N-->>R: noiseReply { isInitiator: false, complete: true, id: 4, data: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
+
+    note right of R: connecting = Map { 3: { Socket { alias: 3 } } }
+
+    R->>N: connection { alias: 3, serverAlias: 2, remotePublicKey: <Buffer ...> }
 
     alt
       N-->>R: destroy { remoteAlias: 3 }
     else
-      note left of N: connections = Map { 3: Socket { alias: 4, handshake: Handshake { } } }
+      note left of N: connections = Map { 3: Socket { alias: 4 } }
 
       N-->>R: accept { alias: 4, remoteAlias: 3 }
 
-      note right of R: connections = Map { 4: Socket { alias: 3, handshake: Handshake { } } }
-
-      N-->>R: noiseReply { alias: 4, data: <Buffer ...>, remotePublicKey: <Buffer ...> }
-
-      R->>N: noiseSend { alias: 3, data: <Buffer ...> }
-
-      N-->>R: noiseReply { alias: 4, data: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
+      note right of R: connections = Map { 4: Socket { alias: 3 } }
 
       R->>N: connected { alias: 3 }
     end
