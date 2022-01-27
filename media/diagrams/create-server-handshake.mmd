@@ -15,29 +15,33 @@ sequenceDiagram
   loop
     note right of R: handshakes = Map { 3: { Handshake { } } } }
 
-    R->>N: noiseReceive { isInitiator: false, id: 3, serverAlias: 2, data: <Buffer ...> }
+    R->>N: noiseReceive { isInitiator: false, id: 3, serverAlias: 2, payload: <Buffer ...> }
 
     note left of N: handshakes = Map { 3: { Handshake { } } }
 
-    N-->>R: noiseReply { isInitiator: false, complete: false, id: 3, data: <Buffer ...>, remotePublicKey: <Buffer ...> }
+    N-->>R: noiseReply { isInitiator: false, complete: false, id: 3, payload: <Buffer ...>, remotePublicKey: <Buffer ...> }
 
-    R->>N: noiseSend { isInitiator: false, id: 3, data: <Buffer ...> }
+    note right of R: incoming = Map { 4: Promise { } }
 
-    N-->>R: noiseReply { isInitiator: false, complete: true, id: 4, data: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
-
-    note right of R: connecting = Map { 3: { Socket { alias: 3 } } }
-
-    R->>N: connection { alias: 3, serverAlias: 2, remotePublicKey: <Buffer ...> }
+    R->>N: incoming { id: 4, serverAlias: 2, remotePublicKey: <Buffer ...>, payload: <Buffer ...>, handshakeId: 3 }
 
     alt
-      N-->>R: destroy { remoteAlias: 3 }
+      N-->>R: deny { id: 4 }
     else
-      note left of N: connections = Map { 3: Socket { alias: 4 } }
+      N-->>R: accept { id: 4 }
 
-      N-->>R: accept { alias: 4, remoteAlias: 3 }
+      R->>N: noiseSend { isInitiator: false, id: 3, payload: <Buffer ...> }
 
-      note right of R: connections = Map { 4: Socket { alias: 3 } }
+      N-->>R: noiseReply { isInitiator: false, complete: true, id: 3, payload: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
 
-      R->>N: connected { alias: 3 }
+      note right of R: connecting = Map { 5: { Socket { alias: 5 } } }
+
+      R->>N: connection { alias: 5, serverAlias: 2, remotePublicKey: <Buffer ...>, handshakeId: 3 }
+
+      note left of N: connections = Map { 5: Socket { alias: 6 } }
+
+      N-->>R: connected { alias: 6, remoteAlias: 5 }
+
+      note right of R: connections = Map { 6: Socket { alias: 5 } }
     end
   end
