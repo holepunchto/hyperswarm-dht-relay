@@ -10,7 +10,45 @@ test('core replication', (t) =>
     const replication = t.test('replication')
     replication.plan(1)
 
-    const server = dht.createServer()
+    const server = node.createServer()
+    await server.listen()
+
+    server.on('connection', async (socket) => {
+      remoteCore.replicate(socket)
+
+      await remoteCore.append(['hello', 'world'])
+      await replication
+
+      socket.end()
+    })
+
+    const socket = node.connect(server.address().publicKey)
+
+    socket.on('open', async () => {
+      localCore.replicate(socket)
+
+      replication.alike(
+        [
+          await localCore.get(0),
+          await localCore.get(1)
+        ],
+        [
+          Buffer.from('hello'),
+          Buffer.from('world')
+        ]
+      )
+    })
+
+    await replication.then(() => server.close())
+  })))))
+)
+
+test('noncustodial core replication', (t) =>
+  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, (node) => withCore((remoteCore) => withCore(remoteCore.key, async (localCore) => {
+    const replication = t.test('replication')
+    replication.plan(1)
+
+    const server = node.createServer()
     await server.listen()
 
     server.on('connection', async (socket) => {

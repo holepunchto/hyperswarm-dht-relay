@@ -1,0 +1,23 @@
+sequenceDiagram
+  participant N as Node
+  participant R as Relay
+
+  note left of N: opening = Map { 1: { Server { alias: 1 } } }
+
+  note left of N: signees = Map { 1: { Signee { } } }
+
+  N->>R: listen { alias: 1, publicKey: <Buffer ...> }
+
+  note right of R: servers = Map { 1: Server { alias: 2 } }
+
+  loop
+    note right of R: signatures = Map { 3: { Promise { } } }
+
+    R->>N: signAnnounce { id: 3, signee: 1, token: <Buffer ...>, peerId: <Buffer ...> }
+
+    N-->>R: signature { id: 3, signature: <Buffer ...> }
+  end
+
+  R-->>N: listening { alias: 2, remoteAlias: 1, host: '<ip>', port: <port> }
+
+  note left of N: servers = Map { 2: Server { alias: 1 } }

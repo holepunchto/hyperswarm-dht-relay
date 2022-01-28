@@ -137,17 +137,6 @@ _Empty_
 3.  `fixed(32)` The public key that was announced on
 4.  `fixed(64)` The secret key
 
-#### `sign` (`17`)
-
-1.  `fixed(4)` The request ID
-2.  `fixed(32)` The public key of the signer
-3.  `buffer` The buffer to sign
-
-#### `signature` (`18`)
-
-1.  `fixed(4)` The request ID
-2.  `buffer` The signature of the signer
-
 ## License
 
 ISC

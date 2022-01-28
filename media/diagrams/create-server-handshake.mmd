@@ -1,0 +1,41 @@
+sequenceDiagram
+  participant N as Node
+  participant R as Relay
+
+  note left of N: opening = Map { 1: { Server { alias: 1 } } }
+
+  N->>R: listen { alias: 1, publicKey: <Buffer ...> }
+
+  note right of R: servers = Map { 1: Server { alias: 2 } }
+
+  R-->>N: listening { alias: 2, remoteAlias: 1, host: '<ip>', port: <port> }
+
+  note left of N: servers = Map { 2: Server { alias: 1 } }
+
+  loop
+    note right of R: handshakes = Map { 3: { Handshake { } } } }
+
+    R->>N: noiseReceive { isInitiator: false, id: 3, serverAlias: 2, payload: <Buffer ...> }
+
+    note left of N: handshakes = Map { 3: { Handshake { } } }
+
+    alt
+      N-->>R: noiseReply { isInitiator: false, complete: false, id: 3, payload: null, remotePublicKey: <Buffer ...> }
+    else
+      N-->>R: noiseReply { isInitiator: false, complete: false, id: 3, payload: <Buffer ...>, remotePublicKey: <Buffer ...> }
+
+      R->>N: noiseSend { isInitiator: false, id: 3, payload: <Buffer ...> }
+
+      N-->>R: noiseReply { isInitiator: false, complete: true, id: 3, payload: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
+
+      note right of R: connecting = Map { 4: { Socket { alias: 4 } } }
+
+      R->>N: connection { alias: 4, serverAlias: 2, remotePublicKey: <Buffer ...>, handshakeId: 3 }
+
+      note left of N: connections = Map { 5: Socket { alias: 5 } }
+
+      N-->>R: connected { alias: 5, remoteAlias: 4 }
+
+      note right of R: connections = Map { 5: Socket { alias: 4 } }
+    end
+  end
