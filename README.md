@@ -2,10 +2,7 @@
 
 > :warning: This project is in its infancy and is therefore considered experimental.
 
-Relaying the Hyperswarm DHT over other transport protocols to bring decentralized networking to everyone. The supported transport protocols are:
-
-- [TCP](https://nodejs.org/api/net.html) (default)
-- [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+Relaying the Hyperswarm DHT over arbitrary streams to bring decentralized networking to everyone.
 
 ## Installation
 
@@ -15,26 +12,21 @@ npm install @hyperswarm/dht-relay
 
 ## Usage
 
-To construct a WebSocket relay:
+On the relaying side:
 
 ```js
-import { WebSocketServer } from 'ws'
 import DHT from '@hyperswarm/dht'
-import { Relay } from '@hyperswarm/dht-relay'
-import ws from '@hyperswarm/dht-relay/ws'
+import { relay } from '@hyperswarm/dht-relay'
 
-const dht = new DHT()
-
-const relay = Relay.fromTransport(ws, dht, new WebSocketServer({ port: 8080 }))
+relay(new DHT(), stream)
 ```
 
-To connect to a WebSocket relay:
+On the relayed side:
 
 ```js
-import { Node } from '@hyperswarm/dht-relay'
-import ws from '@hyperswarm/dht-relay/ws'
+import DHT from '@hyperswarm/dht-relay'
 
-const node = Node.fromTransport(ws, new WebSocket(`ws://127.0.0.1:8080`))
+const dht = new DHT(stream)
 ```
 
 From here, the API matches that of the Hyperswarm DHT: <https://github.com/hyperswarm/dht#api>

@@ -2,18 +2,18 @@ sequenceDiagram
   participant N as Node
   participant R as Relay
 
-  note left of N: connecting = Map { 1: { Socket { alias: 1 } } }
+  note left of N: connecting = Map { 1: { Stream { alias: 1 } } }
 
   N->>R: connect { alias: 1, publicKey: <Buffer ...>, secretKey: <Buffer ...>, remotePublicKey: <Buffer ... > }
 
   alt
     R-->>N: destroy { remoteAlias: 1, error: '<message>' }
   else
-    note right of R: connections = Map { 1: Socket { alias: 2 } }
+    note right of R: connections = Map { 1: Stream { alias: 2 } }
 
     R-->>N: open { alias: 2, remoteAlias: 1, handshakeHash: <Buffer ...> }
 
-    note left of N: connections = Map { 2: Socket { alias: 1 } }
+    note left of N: connections = Map { 2: Stream { alias: 1 } }
 
     par
       loop

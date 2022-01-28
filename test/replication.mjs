@@ -2,35 +2,34 @@ import test from 'brittle'
 
 import { withCore } from './helpers/with-core.mjs'
 import { withDHT } from './helpers/with-dht.mjs'
-import { withRelay } from './helpers/with-relay.mjs'
-import { withNode } from './helpers/with-node.mjs'
+import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('core replication', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, (node) => withCore((remoteCore) => withCore(remoteCore.key, async (localCore) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT((b) => withCore((remote) => withCore(remote.key, async (local) => {
     const replication = t.test('replication')
     replication.plan(1)
 
-    const server = node.createServer()
+    const server = b.createServer()
     await server.listen()
 
     server.on('connection', async (socket) => {
-      remoteCore.replicate(socket)
+      remote.replicate(socket)
 
-      await remoteCore.append(['hello', 'world'])
+      await remote.append(['hello', 'world'])
       await replication
 
       socket.end()
     })
 
-    const socket = node.connect(server.address().publicKey)
+    const socket = b.connect(server.address().publicKey)
 
     socket.on('open', async () => {
-      localCore.replicate(socket)
+      local.replicate(socket)
 
       replication.alike(
         [
-          await localCore.get(0),
-          await localCore.get(1)
+          await local.get(0),
+          await local.get(1)
         ],
         [
           Buffer.from('hello'),
@@ -44,31 +43,31 @@ test('core replication', (t) =>
 )
 
 test('noncustodial core replication', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, (node) => withCore((remoteCore) => withCore(remoteCore.key, async (localCore) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT({ custodial: false }, (b) => withCore((remote) => withCore(remote.key, async (local) => {
     const replication = t.test('replication')
     replication.plan(1)
 
-    const server = node.createServer()
+    const server = b.createServer()
     await server.listen()
 
     server.on('connection', async (socket) => {
-      remoteCore.replicate(socket)
+      remote.replicate(socket)
 
-      await remoteCore.append(['hello', 'world'])
+      await remote.append(['hello', 'world'])
       await replication
 
       socket.end()
     })
 
-    const socket = node.connect(server.address().publicKey)
+    const socket = b.connect(server.address().publicKey)
 
     socket.on('open', async () => {
-      localCore.replicate(socket)
+      local.replicate(socket)
 
       replication.alike(
         [
-          await localCore.get(0),
-          await localCore.get(1)
+          await local.get(0),
+          await local.get(1)
         ],
         [
           Buffer.from('hello'),

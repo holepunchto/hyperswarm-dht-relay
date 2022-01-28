@@ -28,14 +28,14 @@ sequenceDiagram
 
       N-->>R: noiseReply { isInitiator: false, complete: true, id: 3, payload: <Buffer ...>, remoteId: <Buffer ...>, holepunchSecret: <Buffer ...> }
 
-      note right of R: connecting = Map { 4: { Socket { alias: 4 } } }
+      note right of R: connecting = Map { 4: { $tream { alias: 4 } } }
 
       R->>N: connection { alias: 4, serverAlias: 2, remotePublicKey: <Buffer ...>, handshakeId: 3 }
 
-      note left of N: connections = Map { 5: Socket { alias: 5 } }
+      note left of N: connections = Map { 5: $tream { alias: 5 } }
 
       N-->>R: connected { alias: 5, remoteAlias: 4 }
 
-      note right of R: connections = Map { 5: Socket { alias: 4 } }
+      note right of R: connections = Map { 5: $tream { alias: 4 } }
     end
   end

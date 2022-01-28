@@ -1,19 +1,18 @@
 import test from 'brittle'
 
 import { withDHT } from './helpers/with-dht.mjs'
-import { withRelay } from './helpers/with-relay.mjs'
-import { withNode } from './helpers/with-node.mjs'
+import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('lookup', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     t.plan(3)
 
     const topic = Buffer.alloc(32, 'topic')
-    const keyPair = dht.constructor.keyPair()
+    const keyPair = a.constructor.keyPair()
 
-    await dht.announce(topic, keyPair).finished()
+    await a.announce(topic, keyPair).finished()
 
-    const query = node.lookup(topic)
+    const query = b.lookup(topic)
 
     for await (const result of query) {
       t.alike(result.peers, [
@@ -27,17 +26,17 @@ test('lookup', (t) =>
 )
 
 test('announce', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     t.plan(3)
 
     const topic = Buffer.alloc(32, 'topic')
 
-    await node.announce(topic, node.defaultKeyPair).finished()
+    await b.announce(topic, b.defaultKeyPair).finished()
 
-    for await (const result of dht.lookup(topic)) {
+    for await (const result of a.lookup(topic)) {
       t.alike(result.peers, [
         {
-          publicKey: node.defaultKeyPair.publicKey,
+          publicKey: b.defaultKeyPair.publicKey,
           relayAddresses: []
         }
       ])
@@ -46,17 +45,17 @@ test('announce', (t) =>
 )
 
 test('noncustodial announce', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT({ custodial: false }, async (b) => {
     t.plan(3)
 
     const topic = Buffer.alloc(32, 'topic')
 
-    await node.announce(topic, node.defaultKeyPair).finished()
+    await b.announce(topic, b.defaultKeyPair).finished()
 
-    for await (const result of dht.lookup(topic)) {
+    for await (const result of a.lookup(topic)) {
       t.alike(result.peers, [
         {
-          publicKey: node.defaultKeyPair.publicKey,
+          publicKey: b.defaultKeyPair.publicKey,
           relayAddresses: []
         }
       ])
@@ -65,14 +64,14 @@ test('noncustodial announce', (t) =>
 )
 
 test('unannounce', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     const topic = Buffer.alloc(32, 'topic')
 
-    await dht.announce(topic, node.defaultKeyPair).finished()
+    await a.announce(topic, b.defaultKeyPair).finished()
 
-    await node.unannounce(topic, node.defaultKeyPair)
+    await b.unannounce(topic, b.defaultKeyPair)
 
-    for await (const result of dht.lookup(topic)) {
+    for await (const result of a.lookup(topic)) {
       t.absent(result)
     }
 
@@ -81,14 +80,14 @@ test('unannounce', (t) =>
 )
 
 test('noncustodial unannounce', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT({ custodial: false }, async (b) => {
     const topic = Buffer.alloc(32, 'topic')
 
-    await dht.announce(topic, node.defaultKeyPair).finished()
+    await a.announce(topic, b.defaultKeyPair).finished()
 
-    await node.unannounce(topic, node.defaultKeyPair)
+    await b.unannounce(topic, b.defaultKeyPair)
 
-    for await (const result of dht.lookup(topic)) {
+    for await (const result of a.lookup(topic)) {
       t.absent(result)
     }
 
