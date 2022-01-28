@@ -11,7 +11,7 @@ sequenceDiagram
   else
     note right of R: connections = Map { 1: Socket { alias: 2 } }
 
-    R-->>N: connected { alias: 2, remoteAlias: 1, handshakeHash: <Buffer ...> }
+    R-->>N: open { alias: 2, remoteAlias: 1, handshakeHash: <Buffer ...> }
 
     note left of N: connections = Map { 2: Socket { alias: 1 } }
 
