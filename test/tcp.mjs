@@ -19,14 +19,15 @@ test('tcp', (t) =>
     socket.on('open', () => {
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 

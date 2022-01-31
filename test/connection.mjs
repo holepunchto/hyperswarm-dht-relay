@@ -20,8 +20,9 @@ test('client mode', (t) =>
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -29,7 +30,7 @@ test('client mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -54,10 +55,9 @@ test('noncustodial client mode', (t) =>
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => {
-        io.alike(data.toString(), 'pong')
-      })
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -65,7 +65,7 @@ test('noncustodial client mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -90,8 +90,9 @@ test('server mode', (t) =>
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -99,7 +100,7 @@ test('server mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -124,8 +125,9 @@ test('noncustodial server mode', (t) =>
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -133,7 +135,7 @@ test('noncustodial server mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
