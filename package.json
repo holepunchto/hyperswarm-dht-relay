@@ -5,7 +5,8 @@
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
-    "./ws": "./ws.js"
+    "./ws": "./ws.js",
+    "./tcp": "./tcp.js"
   },
   "scripts": {
     "test": "standard && brittle test/*.mjs"
@@ -27,6 +28,7 @@
     "compact-encoding": "^2.4.1",
     "compact-encoding-net": "^1.0.1",
     "events": "^3.3.0",
+    "protomux": "^1.0.1",
     "sodium-universal": "^3.0.4",
     "streamx": "^2.11.3"
   },

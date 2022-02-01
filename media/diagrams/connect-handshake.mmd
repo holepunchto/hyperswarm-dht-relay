@@ -2,13 +2,13 @@ sequenceDiagram
   participant N as Node
   participant R as Relay
 
-  note left of N: connecting = Map { 1: { Socket { alias: 1 } } }
+  note left of N: connecting = Map { 1: { $tream { alias: 1 } } }
 
   N->>R: connect { alias: 1, publicKey: <Buffer ...>, remotePublicKey: <Buffer ... > }
 
   note right of R: handshakes = Map { 2: { Handshake { } } }
 
-  R->>N: noiseSend { isInitiator: true, id: 2, remoteSocketAlias: 1, payload: <Buffer ... > }
+  R->>N: noiseSend { isInitiator: true, id: 2, remote$treamAlias: 1, payload: <Buffer ... > }
 
   note left of N: handshakes = Map { 2: { Handshake { } } }
 
@@ -21,9 +21,9 @@ sequenceDiagram
   alt
     R-->>N: destroy { remoteAlias: 1, error: '<message>' }
   else
-    note right of R: connections = Map { 1: { Socket { alias: 3 } } }
+    note right of R: connections = Map { 1: { $tream { alias: 3 } } }
 
     R-->>N: open { alias: 3, remoteAlias: 1, handshakeId: 2 }
 
-    note left of N: connections = Map { 3: { Socket { alias: 1 } } }
+    note left of N: connections = Map { 3: { $tream { alias: 1 } } }
   end

@@ -1,9 +1,15 @@
 const { Protocol } = require('./lib/protocol')
 const { Node } = require('./lib/node')
-const { Relay } = require('./lib/relay')
+const { NodeProxy } = require('./lib/node-proxy')
 
-module.exports = {
-  Protocol,
-  Node,
-  Relay
+module.exports = Node
+
+module.exports.relay = function relay (dht, stream) {
+  const protocol = new Protocol(stream)
+
+  return new Promise((resolve, reject) => {
+    protocol.once('handshake', (keyPair) =>
+      resolve(new NodeProxy(dht, stream, protocol, keyPair))
+    )
+  })
 }

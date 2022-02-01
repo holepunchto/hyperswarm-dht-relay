@@ -1,28 +1,28 @@
 import test from 'brittle'
 
 import { withDHT } from './helpers/with-dht.mjs'
-import { withRelay } from './helpers/with-relay.mjs'
-import { withNode } from './helpers/with-node.mjs'
+import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('client mode', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     const connect = t.test('connect')
     connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
 
-    const server = dht.createServer()
+    const server = a.createServer()
     await server.listen()
 
-    const socket = node.connect(server.address().publicKey)
+    const socket = b.connect(server.address().publicKey)
 
     socket.on('open', () => {
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -30,7 +30,7 @@ test('client mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -39,26 +39,25 @@ test('client mode', (t) =>
 )
 
 test('noncustodial client mode', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT({ custodial: false }, async (b) => {
     const connect = t.test('connect')
     connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
 
-    const server = dht.createServer()
+    const server = a.createServer()
     await server.listen()
 
-    const socket = node.connect(server.address().publicKey)
+    const socket = b.connect(server.address().publicKey)
 
     socket.on('open', () => {
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => {
-        io.alike(data.toString(), 'pong')
-      })
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -66,7 +65,7 @@ test('noncustodial client mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -75,24 +74,25 @@ test('noncustodial client mode', (t) =>
 )
 
 test('server mode', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     const connect = t.test('connect')
     connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
 
-    const server = node.createServer()
+    const server = b.createServer()
     await server.listen()
 
-    const socket = dht.connect(server.address().publicKey)
+    const socket = a.connect(server.address().publicKey)
 
     socket.on('open', () => {
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -100,7 +100,7 @@ test('server mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
@@ -109,24 +109,25 @@ test('server mode', (t) =>
 )
 
 test('noncustodial server mode', (t) =>
-  withDHT((dht) => withRelay(dht, (relay) => withNode(relay, { custodial: false }, async (node) => {
+  withDHT((a) => withRelay(a, (withDHT) => withDHT({ custodial: false }, async (b) => {
     const connect = t.test('connect')
     connect.plan(3)
 
     const io = t.test('read and write')
     io.plan(2)
 
-    const server = node.createServer()
+    const server = b.createServer()
     await server.listen()
 
-    const socket = dht.connect(server.address().publicKey)
+    const socket = a.connect(server.address().publicKey)
 
     socket.on('open', () => {
       connect.pass('client connected')
       connect.alike(socket.remotePublicKey, server.address().publicKey)
 
-      socket.write('ping')
-      socket.once('data', (data) => io.alike(data.toString(), 'pong'))
+      socket
+        .once('data', (data) => io.alike(data.toString(), 'pong'))
+        .end('ping')
     })
 
     server.on('connection', (socket) => {
@@ -134,7 +135,7 @@ test('noncustodial server mode', (t) =>
 
       socket.on('data', (data) => {
         io.alike(data.toString(), 'ping')
-        socket.write('pong')
+        socket.end('pong')
       })
     })
 
