@@ -8,8 +8,17 @@ module.exports.relay = function relay (dht, stream) {
   const protocol = new Protocol(stream)
 
   return new Promise((resolve, reject) => {
-    protocol.once('handshake', (keyPair) =>
-      resolve(new NodeProxy(dht, stream, protocol, keyPair))
-    )
+    const onHandshake = (message) => {
+      const node = new NodeProxy(dht, stream, protocol, {
+        publicKey: message.publicKey,
+        secretKey: message.secretKey
+      })
+
+      resolve(node)
+    }
+
+    protocol
+      .once('handshake', onHandshake)
+      .heartbeat()
   })
 }
