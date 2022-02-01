@@ -1,7 +1,7 @@
 import net from 'net'
 
-import Stream from '../../../tcp.js'
 import DHT, { relay } from '../../../index.js'
+import Stream from '../../../tcp.js'
 
 export async function withRelay (dht, cb) {
   const server = net.createServer().listen()

@@ -2,7 +2,7 @@
 
 > :warning: This project is in its infancy and is therefore considered experimental.
 
-Relaying the Hyperswarm DHT over arbitrary streams to bring decentralized networking to everyone.
+Relaying the Hyperswarm DHT over framed streams to bring decentralized networking to everyone.
 
 ## Installation
 
@@ -30,6 +30,66 @@ const dht = new DHT(stream)
 ```
 
 From here, the API matches that of the Hyperswarm DHT: <https://github.com/hyperswarm/dht#api>
+
+### Transports
+
+As a convenience, we provide stream wrappers for common transport protocols. These may or may not be appropriate for your particular use case and so your mileage may vary.
+
+<details>
+<summary>TCP</summary>
+
+```js
+import net from 'net'
+
+import DHT from '@hyperswarm/dht'
+import { relay } from '@hyperswarm/dht-relay'
+import Stream from '@hyperswarm/dht-relay/tcp'
+
+const dht = new DHT()
+const server = net.createServer().listen(8080)
+
+server.on('connection', (socket) => {
+  relay(dht, new Stream(false, socket))
+})
+```
+
+```js
+import net from 'net'
+
+import DHT from '@hyperswarm/dht-relay'
+import Stream from '@hyperswarm/dht-relay/tcp'
+
+const socket = net.connect(8080)
+const dht = new DHT(new Stream(true, socket))
+```
+</details>
+
+<details>
+<summary>WebSocket</summary>
+
+```js
+import { WebSocketServer } from 'ws'
+
+import DHT from '@hyperswarm/dht'
+import { relay } from '@hyperswar/dht-relay'
+import Stream from '@hyperswarm/dht-relay/ws'
+
+const dht = new DHT()
+const server = new WebSocketServer({ port: 8080 })
+
+server.on('connection', (socket) => {
+  relay(dht, new Stream(false, socket))
+})
+```
+
+```js
+import DHT from '@hyperswarm/dht-relay'
+import Stream from '@hyperswarm/dht-relay/ws'
+
+const socket = new WebSocket("ws://localhost:8080")
+const dht = new DHT(new Stream(true, socket), options)
+```
+</details>
 
 ## Protocol
 

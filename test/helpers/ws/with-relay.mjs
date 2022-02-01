@@ -1,7 +1,7 @@
 import { WebSocketServer, WebSocket } from 'ws'
 
-import Stream from '../../../ws.js'
 import DHT, { relay } from '../../../index.js'
+import Stream from '../../../ws.js'
 
 export async function withRelay (dht, cb) {
   const server = new WebSocketServer({ port: 0 })
@@ -20,7 +20,7 @@ export async function withRelay (dht, cb) {
       options = {}
     }
 
-    const socket = new WebSocket(`ws://127.0.0.1:${server.address().port}`)
+    const socket = new WebSocket(`ws://localhost:${server.address().port}`)
 
     const dht = new DHT(new Stream(true, socket), options)
     await dht.ready()
