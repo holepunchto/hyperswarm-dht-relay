@@ -12,7 +12,7 @@ test('core replication', (t) =>
     const server = b.createServer()
     await server.listen()
 
-    server.on('connection', async (socket) => {
+    server.once('connection', async (socket) => {
       remote.replicate(socket)
 
       await remote.append(['hello', 'world'])
@@ -21,9 +21,9 @@ test('core replication', (t) =>
       socket.end()
     })
 
-    const socket = b.connect(server.address().publicKey)
+    const socket = b.connect(server.publicKey)
 
-    socket.on('open', async () => {
+    socket.once('open', async () => {
       local.replicate(socket)
 
       replication.alike(
@@ -50,7 +50,7 @@ test('noncustodial core replication', (t) =>
     const server = b.createServer()
     await server.listen()
 
-    server.on('connection', async (socket) => {
+    server.once('connection', async (socket) => {
       remote.replicate(socket)
 
       await remote.append(['hello', 'world'])
@@ -59,9 +59,9 @@ test('noncustodial core replication', (t) =>
       socket.end()
     })
 
-    const socket = b.connect(server.address().publicKey)
+    const socket = b.connect(server.publicKey)
 
-    socket.on('open', async () => {
+    socket.once('open', async () => {
       local.replicate(socket)
 
       replication.alike(

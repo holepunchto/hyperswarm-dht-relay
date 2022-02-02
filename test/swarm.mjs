@@ -12,22 +12,22 @@ test('swarm join peer', (t) =>
     const server = a.createServer()
     await server.listen()
 
-    server.on('connection', (socket) => {
+    server.once('connection', (socket) => {
       socket
-        .on('close', () => join.pass('server socket closed'))
-        .on('data', (data) => {
+        .once('close', () => join.pass('server socket closed'))
+        .once('data', (data) => {
           join.alike(data, Buffer.from('hello'))
           socket.end()
         })
     })
 
-    swarm.on('connection', (socket) => {
+    swarm.once('connection', (socket) => {
       socket
-        .on('close', () => join.pass('client socket closed'))
+        .once('close', () => join.pass('client socket closed'))
         .end('hello')
     })
 
-    swarm.joinPeer(server.address().publicKey)
+    swarm.joinPeer(server.publicKey)
 
     await join.then(() => server.close())
   }))))

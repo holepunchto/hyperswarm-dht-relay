@@ -14,18 +14,18 @@ test('tcp', (t) =>
     const server = a.createServer()
     await server.listen()
 
-    const socket = b.connect(server.address().publicKey)
+    const socket = b.connect(server.publicKey)
 
-    socket.on('open', () => {
-      connect.alike(socket.remotePublicKey, server.address().publicKey)
+    socket.once('open', () => {
+      connect.alike(socket.remotePublicKey, server.publicKey)
 
       socket
         .once('data', (data) => io.alike(data.toString(), 'pong'))
         .end('ping')
     })
 
-    server.on('connection', (socket) => {
-      socket.on('data', (data) => {
+    server.once('connection', (socket) => {
+      socket.once('data', (data) => {
         io.alike(data.toString(), 'ping')
         socket.end('pong')
       })
