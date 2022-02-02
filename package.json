@@ -25,7 +25,7 @@
     "@hyperswarm/dht": "^5.0.13",
     "@hyperswarm/secret-stream": "^5.1.4",
     "b4a": "^1.1.4",
-    "compact-encoding": "^2.4.1",
+    "compact-encoding": "^2.6.1",
     "compact-encoding-net": "^1.0.1",
     "events": "^3.3.0",
     "protomux": "^1.0.1",
