@@ -93,101 +93,129 @@ const dht = new DHT(new Stream(true, socket), options)
 
 ## Protocol
 
-> :warning: The protocol currently exchanges public **and** private keys between peers and the relay due to limitations in the underlying crypto APIs. In the future, only public keys will be exchanged and the relay will instead forward the Noise handshake request to peers for them to perform using their private key.
-
 A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module.
 
 ### Messages
 
-Each message is prefixed with its `uint24` length and its `uint` type listed in parentheses. All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
+All types are specified as their corresponding [compact-encoding](https://github.com/compact-encoding) codec.
 
 #### `handshake` (`0`)
 
-1.  `fixed(32)` The public key of the peer
-2.  `fixed(64)` The secret key
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `fixed(32)` The public key of the peer
+3.  (if `custodial` is set) `fixed(64)` The secret key
 
-#### `error` (`1`)
-
-1.  `string` The error message
-
-#### `ping` (`2`)
+#### `ping` (`1`)
 
 _Empty_
 
-#### `pong` (`3`)
+#### `pong` (`2`)
 
 _Empty_
 
-#### `connect` (`4`)
+#### `connect` (`3`)
 
-1.  `fixed(4)` The ID of the socket
-2.  `fixed(32)` The public key of the connection
-3.  `fixed(64)` The secret key
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The alias of the stream
+3.  `fixed(32)` The public key of the peer
+4.  (if `custodial` is set) `fixed(64)` The secret key
+5.  `fixed(32)` The public key of the remote peer
+
+#### `connection` (`4`)
+
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The alias of the stream
+3.  `uint32` The alias of the server
 4.  `fixed(32)` The public key of the remote peer
+5.  (if `custodial` is set) `fixed(64)` The Noise handshake hash
+6.  (if `custodial` is not set) `uint32` The ID of the Noise handshake
 
-#### `connection` (`5`)
+#### `connected` (`5`)
 
-1.  `fixed(4)` The ID of the socket
-2.  `fixed(32)` The public key of the connection
-3.  `fixed(32)` The public key of the remote peer
-4.  `fixed(64)` The Noise handshake hash
+1.  `uint32` The alias of the stream
+2.  `uint32` The remote alias of the stream
 
-#### `destroy` (`6`)
+#### `destroy` (`9`)
 
-1.  `fixed(4)` The ID of the socket
-2.  `fixed(32)` The public key of the connection
+1.  `uint8` Flags
+    - `error`: `1`
+2.  `fixed(4)` The alias of the stream
+3.  (if `error` is set) `string` The reason the stream was destroyed
 
-#### `listen` (`7`)
+#### `listen` (`10`)
 
-1.  `fixed(32)` The public key of the server
-2.  `fixed(64)` The secret key
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The alias of the server
+3.  `fixed(32)` The public key of the server
+4.  (if `custodial` is set) `fixed(64)` The secret key
 
-#### `listening` (`8`)
+#### `listening` (`11`)
 
-1.  `fixed(32)` The public key of the server
-2.  [`ipv4Address`][ipv4Address] The address of the server
+1.  `uint32` The alias of the server
+2.  `uint32` The remote alias of the server
+3.  [`ipv4Address`][ipv4Address] The address of the server
 
-#### `close` (`9`)
+#### `close` (`12`)
 
-1.  `fixed(32)` The public key of the server
+1.  `uint32` The alias of the server
 
-#### `closed` (`10`)
+#### `closed` (`13`)
 
-1.  `fixed(32)` The public key of the server
+1.  `uint32` The alias of the server
 
-#### `data` (`11`)
+#### `open` (`14`)
 
-1.  `fixed(4)` The ID of the socket
-2.  `fixed(32)` The public key of the connection
-3.  `array(buffer)` The data sent
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The alias of the stream
+3.  `uint32` The alias of the server
+4.  (if `custodial` is set) `fixed(64)` The Noise handshake hash
+5.  (if `custodial` is not set) `uint32` The ID of the Noise handshake
 
-#### `result` (`12`)
+#### `end` (`15`)
 
-1.  `fixed(4)` The query ID
+1.  `uint32` The alias of the stream
+
+#### `data` (`16`)
+
+1.  `uint32` The alias of the stream
+2.  `array(buffer)` The data sent
+
+#### `result` (`17`)
+
+1.  `uint32` The query ID
 2.  `raw` The query specific data
 
-#### `finished` (`13`)
+#### `finished` (`18`)
 
-1.  `fixed(4)` The query ID
+1.  `uint32` The query ID
 
-#### `lookup` (`14`)
+#### `lookup` (`19`)
 
-1.  `fixed(4)` The query ID
+1.  `uint32` The query ID
 2.  `fixed(32)` The topic to look up
 
-#### `announce` (`15`)
+#### `announce` (`20`)
 
-1.  `fixed(4)` The query ID
-2.  `fixed(32)` The topic to announce
-3.  `fixed(32)` The public key to announce on
-4.  `fixed(64)` The secret key
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The query ID
+3.  `fixed(32)` The topic to announce
+4.  `fixed(32)` The public key to announce on
+5.  (if `custodial` is set) `fixed(64)` The secret key
 
-#### `unannounce` (`16`)
+#### `unannounce` (`21`)
 
-1.  `fixed(4)` The query ID
-2.  `fixed(32)` The topic to unannounce
-3.  `fixed(32)` The public key that was announced on
-4.  `fixed(64)` The secret key
+1.  `uint8` Flags
+    - `custodial`: `1`
+2.  `uint32` The query ID
+3.  `fixed(32)` The topic to unannounce
+4.  `fixed(32)` The public key that was announced on
+5.  (if `custodial` is set) `fixed(64)` The secret key
 
 ## License
 
