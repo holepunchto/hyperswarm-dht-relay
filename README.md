@@ -86,7 +86,7 @@ server.on('connection', (socket) => {
 import DHT from '@hyperswarm/dht-relay'
 import Stream from '@hyperswarm/dht-relay/ws'
 
-const socket = new WebSocket("ws://localhost:8080")
+const socket = new WebSocket('ws://localhost:8080')
 const dht = new DHT(new Stream(true, socket), options)
 ```
 </details>
