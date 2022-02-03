@@ -131,12 +131,27 @@ _Empty_
 3.  `uint32` The alias of the server
 4.  `fixed(32)` The public key of the remote peer
 5.  (if `custodial` is set) `fixed(64)` The Noise handshake hash
-6.  (if `custodial` is not set) `uint32` The ID of the Noise handshake
+6.  (if `custodial` is not set) `uint32` The ID of the Noise handshake session
 
 #### `connected` (`5`)
 
 1.  `uint32` The alias of the stream
 2.  `uint32` The remote alias of the stream
+
+#### `incoming` (`6`)
+
+1.  `uint32` The ID of the request
+2.  `uint32` The alias of the server
+3.  `fixed(32)` The public key of the remote peer
+4.  `buffer` The Noise handshake payload
+
+#### `deny` (`7`)
+
+1.  `uint32` The ID of the request
+
+#### `accept` (`8`)
+
+1.  `uint32` The ID of the request
 
 #### `destroy` (`9`)
 
@@ -159,7 +174,7 @@ _Empty_
 
 1.  `uint32` The alias of the server
 2.  `uint32` The remote alias of the server
-3.  [`ipv4Address`][ipv4Address] The address of the server
+3.  [`ipv4Address`][ipv4address] The address of the server
 
 #### `close` (`12`)
 
@@ -176,7 +191,7 @@ _Empty_
 2.  `uint32` The alias of the stream
 3.  `uint32` The alias of the server
 4.  (if `custodial` is set) `fixed(64)` The Noise handshake hash
-5.  (if `custodial` is not set) `uint32` The ID of the Noise handshake
+5.  (if `custodial` is not set) `uint32` The ID of the Noise handshake session
 
 #### `end` (`15`)
 
@@ -219,8 +234,56 @@ _Empty_
 4.  `fixed(32)` The public key that was announced on
 5.  (if `custodial` is set) `fixed(64)` The secret key
 
+#### `signAnnounce` (`22`)
+
+1.  `uint32` The ID of the request
+2.  `uint32` The alias of the signee
+3.  `fixed(32)` The roundtrip token of the peer
+4.  `buffer` The ID of the peer
+5.  `array(`[`ipv4Address`](ipv4address)`)` The addresses that may relay messages
+
+#### `signUnannounce` (`23`)
+
+1.  `uint32` The ID of the request
+2.  `uint32` The alias of the signee
+3.  `fixed(32)` The roundtrip token of the peer
+4.  `buffer` The ID of the peer
+5.  `array(`[`ipv4Address`](ipv4address)`)` The addresses that may relay messages
+
+#### `signature` (`24`)
+
+1.  `uint32` The ID of the request
+2.  `buffer` The signature
+
+#### `noiseSend` (`25`)
+
+1.  `uint8` Flags
+    - `isInitiator`: `1`
+2.  `uint32` The ID of the handshake session
+3.  (if `isInitiator` is set) The alias of the remote stream
+4.  `buffer` The Noise handshake payload
+
+#### `noiseReceive` (`26`)
+
+1.  `uint8` Flags
+    - `isInitiator`: `1`
+2.  `uint32` The ID of the handshake session
+3.  (if `isInitiator` is not set) The alias of the server
+4.  `buffer` The Noise handshake payload
+
+#### `noiseReply` (`27`)
+
+1.  `uint8` Flags
+    - `isInitiator`: `1`
+    - `complete`: `2`
+2.  `uint32` The ID of the handshake session
+3.  `buffer` The Noise handshake payload
+4.  (if `isInitiator` and `complete` are not set) `fixed(32)` The public key of the remote peer
+5.  (if `complete` is set) `fixed(32)` The ID of the remote stream
+6.  (if `complete` is set) `fixed(32)` The holepunch secret
+
 ## License
 
 ISC
 
-[ipv4Address]: https://github.com/compact-encoding/compact-encoding-net#ipv4address
+[ipv4address]: https://github.com/compact-encoding/compact-encoding-net#ipv4address
