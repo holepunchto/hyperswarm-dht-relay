@@ -7,7 +7,7 @@ module.exports = Node
 module.exports.relay = function relay (dht, stream) {
   const protocol = new Protocol(stream)
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const onHandshake = (message) => {
       const node = new NodeProxy(dht, protocol, {
         publicKey: message.publicKey,
