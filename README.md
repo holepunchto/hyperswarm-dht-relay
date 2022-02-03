@@ -240,7 +240,7 @@ _Empty_
 2.  `uint32` The alias of the signee
 3.  `fixed(32)` The roundtrip token of the peer
 4.  `buffer` The ID of the peer
-5.  `array(`[`ipv4Address`](ipv4address)`)` The addresses that may relay messages
+5.  `array(`[`ipv4Address`][ipv4address]`)` The addresses that may relay messages
 
 #### `signUnannounce` (`23`)
 
@@ -248,7 +248,7 @@ _Empty_
 2.  `uint32` The alias of the signee
 3.  `fixed(32)` The roundtrip token of the peer
 4.  `buffer` The ID of the peer
-5.  `array(`[`ipv4Address`](ipv4address)`)` The addresses that may relay messages
+5.  `array(`[`ipv4Address`][ipv4address]`)` The addresses that may relay messages
 
 #### `signature` (`24`)
 
