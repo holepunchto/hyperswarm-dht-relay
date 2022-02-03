@@ -11,7 +11,7 @@ test('tcp', (t) =>
     const io = t.test('read and write')
     io.plan(2)
 
-    const server = a.createServer()
+    const server = b.createServer()
     await server.listen()
 
     const socket = b.connect(server.publicKey)
