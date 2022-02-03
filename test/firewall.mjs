@@ -35,3 +35,26 @@ test('firewall deny', (t) =>
     await connect
   })))
 )
+
+test('throw in firewall hook', (t) =>
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
+    const connect = t.test('connect and error')
+    connect.plan(1)
+
+    const server = b.createServer({
+      firewall () {
+        throw new Error()
+      }
+    })
+
+    await server.listen()
+
+    const socket = b.connect(server.publicKey)
+
+    socket.once('error', (err) => {
+      connect.is(err.message, 'Could not connect to peer')
+    })
+
+    await connect
+  })))
+)
