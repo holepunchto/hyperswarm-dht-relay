@@ -142,3 +142,16 @@ test('noncustodial server mode', (t) =>
     await Promise.all([connect, io]).then(() => server.close())
   })))
 )
+
+test('connect to nonexisting key', (t) =>
+  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
+    const e = t.test('error')
+    e.plan(1)
+
+    b.connect(Buffer.alloc(32, 'public key')).once('error', (err) => {
+      e.is(err.message, 'Could not find peer')
+    })
+
+    await e
+  })))
+)

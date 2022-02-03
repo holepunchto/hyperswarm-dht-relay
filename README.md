@@ -141,8 +141,10 @@ _Empty_
 #### `destroy` (`9`)
 
 1.  `uint8` Flags
-    - `error`: `1`
-2.  `fixed(4)` The alias of the stream
+    - `paired`: `1`
+    - `error`: `2`
+2.  (if `paired` is set) `uint32` The alias of the stream
+2.  (if `paired` is not set) `uint32` The remote alias of the stream
 3.  (if `error` is set) `string` The reason the stream was destroyed
 
 #### `listen` (`10`)
