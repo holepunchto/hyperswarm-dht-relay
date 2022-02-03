@@ -16,14 +16,15 @@ test('client mode', (t) =>
 
     const socket = b.connect(server.publicKey)
 
-    socket.once('open', () => {
-      connect.pass('client connected')
-      connect.alike(socket.remotePublicKey, server.publicKey)
+    socket
+      .once('connect', () => connect.pass('client connected'))
+      .once('open', () => {
+        connect.alike(socket.remotePublicKey, server.publicKey)
 
-      socket
-        .once('data', (data) => io.alike(data.toString(), 'pong'))
-        .end('ping')
-    })
+        socket
+          .once('data', (data) => io.alike(data.toString(), 'pong'))
+          .end('ping')
+      })
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
@@ -51,14 +52,15 @@ test('noncustodial client mode', (t) =>
 
     const socket = b.connect(server.publicKey)
 
-    socket.once('open', () => {
-      connect.pass('client connected')
-      connect.alike(socket.remotePublicKey, server.publicKey)
+    socket
+      .once('connect', () => connect.pass('client connected'))
+      .once('open', () => {
+        connect.alike(socket.remotePublicKey, server.publicKey)
 
-      socket
-        .once('data', (data) => io.alike(data.toString(), 'pong'))
-        .end('ping')
-    })
+        socket
+          .once('data', (data) => io.alike(data.toString(), 'pong'))
+          .end('ping')
+      })
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
@@ -86,14 +88,15 @@ test('server mode', (t) =>
 
     const socket = a.connect(server.publicKey)
 
-    socket.once('open', () => {
-      connect.pass('client connected')
-      connect.alike(socket.remotePublicKey, server.publicKey)
+    socket
+      .once('connect', () => connect.pass('client connected'))
+      .once('open', () => {
+        connect.alike(socket.remotePublicKey, server.publicKey)
 
-      socket
-        .once('data', (data) => io.alike(data.toString(), 'pong'))
-        .end('ping')
-    })
+        socket
+          .once('data', (data) => io.alike(data.toString(), 'pong'))
+          .end('ping')
+      })
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
@@ -121,14 +124,15 @@ test('noncustodial server mode', (t) =>
 
     const socket = a.connect(server.publicKey)
 
-    socket.once('open', () => {
-      connect.pass('client connected')
-      connect.alike(socket.remotePublicKey, server.publicKey)
+    socket
+      .once('connect', () => connect.pass('client connected'))
+      .once('open', () => {
+        connect.alike(socket.remotePublicKey, server.publicKey)
 
-      socket
-        .once('data', (data) => io.alike(data.toString(), 'pong'))
-        .end('ping')
-    })
+        socket
+          .once('data', (data) => io.alike(data.toString(), 'pong'))
+          .end('ping')
+      })
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
