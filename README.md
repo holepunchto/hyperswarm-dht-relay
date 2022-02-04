@@ -1,6 +1,6 @@
 # Hyperswarm Relay
 
-> :warning: This project is in its infancy and is therefore considered experimental.
+> :test_tube: This project is still experimental. **Do not use it in production**.
 
 Relaying the Hyperswarm DHT over framed streams to bring decentralized networking to everyone.
 
