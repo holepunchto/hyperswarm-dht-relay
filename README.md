@@ -38,6 +38,10 @@ As a convenience, we provide stream wrappers for common transport protocols. The
 <details>
 <summary>TCP</summary>
 
+The TCP wrapper is a re-export of <https://github.com/hyperswarm/secret-stream> which adds both framing and encryption.
+
+On the relaying side:
+
 ```js
 import net from 'net'
 
@@ -53,6 +57,8 @@ server.on('connection', (socket) => {
 })
 ```
 
+On the relayed side:
+
 ```js
 import net from 'net'
 
@@ -66,6 +72,10 @@ const dht = new DHT(new Stream(true, socket))
 
 <details>
 <summary>WebSocket</summary>
+
+The WebSocket wrapper is a simple `Duplex` stream that only adapts the interface of the WebSocket as the WebSocket API already provides its own framing and encryption.
+
+On the relaying side:
 
 ```js
 import { WebSocketServer } from 'ws'
@@ -82,18 +92,20 @@ server.on('connection', (socket) => {
 })
 ```
 
+On the relayed side:
+
 ```js
 import DHT from '@hyperswarm/dht-relay'
 import Stream from '@hyperswarm/dht-relay/ws'
 
 const socket = new WebSocket('ws://localhost:8080')
-const dht = new DHT(new Stream(true, socket), options)
+const dht = new DHT(new Stream(true, socket))
 ```
 </details>
 
 ## Protocol
 
-A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module.
+A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module. The protocol is versioned and built on top of <https://github.com/mafintosh/protomux>.
 
 ### Messages
 
