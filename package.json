@@ -5,9 +5,15 @@
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
-    "./ws": "./ws.js",
-    "./tcp": "./tcp.js"
+    "./tcp": "./tcp.js",
+    "./ws": "./ws.js"
   },
+  "files": [
+    "index.js",
+    "tcp.js",
+    "ws.js",
+    "lib/**/*.js"
+  ],
   "scripts": {
     "test": "standard && brittle test/*.mjs"
   },
