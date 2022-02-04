@@ -217,7 +217,7 @@ _Empty_
 #### `result` (`17`)
 
 1.  `uint32` The query ID
-2.  `raw` The query specific data
+2.  `buffer` The query specific data
 
 #### `finished` (`18`)
 
