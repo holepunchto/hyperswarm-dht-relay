@@ -81,7 +81,7 @@ On the relaying side:
 import { WebSocketServer } from 'ws'
 
 import DHT from '@hyperswarm/dht'
-import { relay } from '@hyperswar/dht-relay'
+import { relay } from '@hyperswarm/dht-relay'
 import Stream from '@hyperswarm/dht-relay/ws'
 
 const dht = new DHT()
