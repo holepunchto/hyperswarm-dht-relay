@@ -1,10 +1,13 @@
 import test from 'brittle'
 
+import { withMatrix } from './helpers/with-matrix.mjs'
 import { withDHT } from './helpers/with-dht.mjs'
 import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('firewall deny', (t) =>
-  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
+  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
+    t.comment(`custodial = ${options.custodial}`)
+
     const connect = t.test('connect and error')
     connect.plan(3)
 
@@ -33,11 +36,13 @@ test('firewall deny', (t) =>
     })
 
     await connect
-  })))
+  }))))
 )
 
 test('throw in firewall hook', (t) =>
-  withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
+  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
+    t.comment(`custodial = ${options.custodial}`)
+
     const connect = t.test('connect and error')
     connect.plan(1)
 
@@ -56,5 +61,5 @@ test('throw in firewall hook', (t) =>
     })
 
     await connect
-  })))
+  }))))
 )
