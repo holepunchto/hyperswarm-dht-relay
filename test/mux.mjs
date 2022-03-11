@@ -20,7 +20,7 @@ test('relay over existing muxer', (t) =>
     const mux = (stream) => {
       const m = new Protomux(stream)
 
-      const p = m.addProtocol({ name: 'dummy', messages: 1 })
+      const p = m.open({ protocol: 'dummy' })
 
       p.addMessage({
         encoding: none,
