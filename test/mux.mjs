@@ -20,12 +20,15 @@ test('relay over existing muxer', (t) =>
     const mux = (stream) => {
       const m = new Protomux(stream)
 
-      const p = m.open({ protocol: 'dummy' })
+      const p = m.createChannel({ protocol: 'dummy' })
 
-      p.addMessage({
+      const d = p.addMessage({
         encoding: none,
         onmessage: () => io.pass('dummy message received')
-      }).send()
+      })
+
+      p.open()
+      d.send()
 
       return m
     }
