@@ -1,23 +1,11 @@
-import DHT from '@hyperswarm/dht'
+import createTestnet from '@hyperswarm/testnet'
 
 export async function withDHT (cb) {
-  const dht = new DHT({ ephemeral: true, bootstrap: [] })
-  await dht.ready()
-
-  const aux = []
-  const bootstrap = [
-    { host: '127.0.0.1', port: dht.address().port }
-  ]
-
-  for (let i = 0; i < 3; i++) {
-    const dht = aux[i] = new DHT({ ephemeral: false, bootstrap })
-    await dht.ready()
-  }
+  const testnet = await createTestnet(4)
 
   try {
-    await cb(dht)
+    await cb(testnet.nodes[0])
   } finally {
-    for (const dht of aux) await dht.destroy()
-    await dht.destroy()
+    await testnet.destroy()
   }
 }

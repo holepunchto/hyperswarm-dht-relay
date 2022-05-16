@@ -41,6 +41,7 @@
     "timeout-refresh": "^2.0.1"
   },
   "devDependencies": {
+    "@hyperswarm/testnet": "^2.0.0",
     "brittle": "^2.2.7",
     "hypercore": "^10.0.0-alpha.34",
     "hyperswarm": "^3.0.1",
