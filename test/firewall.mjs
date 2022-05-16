@@ -9,19 +9,19 @@ test('firewall deny', (t) =>
     t.comment(`custodial = ${options.custodial}`)
 
     const connect = t.test('connect and error')
-    connect.plan(3)
+    connect.plan(4)
 
     const server = b.createServer({
       firewall (remotePublicKey, remoteNoisePayload) {
         connect.alike(remotePublicKey, socket.publicKey)
-        connect.alike(remoteNoisePayload, {
-          version: 1,
-          error: 0,
-          firewall: 0,
-          protocols: 3,
-          holepunch: null,
-          addresses: []
-        })
+
+        const {
+          version,
+          error
+        } = remoteNoisePayload
+
+        connect.is(version, 1)
+        connect.is(error, 0)
 
         return true
       }
