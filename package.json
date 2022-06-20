@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/hyperswarm/dht-relay#readme",
   "dependencies": {
-    "@hyperswarm/dht": "^5.0.13",
-    "@hyperswarm/secret-stream": "^5.1.4",
+    "@hyperswarm/dht": "^6.0.1",
+    "@hyperswarm/secret-stream": "^6.0.0",
     "b4a": "^1.1.4",
     "compact-encoding": "^2.6.1",
     "compact-encoding-net": "^1.0.1",
@@ -41,12 +41,12 @@
     "timeout-refresh": "^2.0.1"
   },
   "devDependencies": {
-    "@hyperswarm/testnet": "^2.0.0",
+    "@hyperswarm/testnet": "^3.0.0",
     "brittle": "^2.2.7",
     "hypercore": "^10.0.0-alpha.34",
-    "hyperswarm": "^3.0.1",
+    "hyperswarm": "^4.0.1",
     "random-access-memory": "^4.0.0",
-    "standard": "^16.0.3",
+    "standard": "^17.0.0",
     "ws": "^8.2.2"
   }
 }

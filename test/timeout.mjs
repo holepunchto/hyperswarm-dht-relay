@@ -26,6 +26,8 @@ test('timeout', (t) =>
       })
 
     server.once('connection', (socket) => {
+      socket.on('error', () => {})
+
       const tick = () => {
         if (++i < 10) socket.write(`${i}`)
         else clearInterval(interval)
