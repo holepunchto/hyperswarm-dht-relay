@@ -19,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hyperswarm/dht-relay.git"
+    "url": "git+https://github.com/holepunchto/hyperswarm-dht-relay.git"
   },
   "author": "Kasper Isager Dalsgarð <kasper@funktionel.co>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hyperswarm/dht-relay/issues"
+    "url": "https://github.com/holepunchto/hyperswarm-dht-relay/issues"
   },
-  "homepage": "https://github.com/hyperswarm/dht-relay#readme",
+  "homepage": "https://github.com/holepunchto/hyperswarm-dht-relay#readme",
   "dependencies": {
     "@hyperswarm/dht": "^6.0.1",
     "@hyperswarm/secret-stream": "^6.0.0",
