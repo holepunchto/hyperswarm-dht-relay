@@ -116,6 +116,8 @@ Run a DHT relay server:
 dht-relay # [--port 49443] [--host 0.0.0.0] [--cert <path fullchain.pem>] [--key <path privkey.pem>]
 ```
 
+If running behind a proxy like NGINX then add `--behind-proxy` so logging info is correct.
+
 ## Protocol
 
 A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module. The protocol is versioned and built on top of <https://github.com/mafintosh/protomux>.

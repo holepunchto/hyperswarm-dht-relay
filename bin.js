@@ -10,6 +10,7 @@ const Stream = require('@hyperswarm/dht-relay/ws')
 const graceful = require('graceful-http')
 const goodbye = require('graceful-goodbye')
 
+const behindProxy = argv('behind-proxy', Boolean)
 const port = argv('port', Number, 49443)
 const host = argv('host', String)
 const ssl = {
@@ -27,8 +28,19 @@ if (ssl.key) ssl.key = fs.readFileSync(ssl.key) // eg privkey.pem
 const isSecure = ssl.cert && ssl.key
 const server = (isSecure ? https : http).createServer({ ...ssl })
 const wss = new WebSocketServer({ server })
+let connections = 0
 
-wss.on('connection', (socket) => {
+wss.on('connection', function (socket, req) {
+  const remoteInfo = getRemoteAddress(req) + ':' + req.socket.remotePort
+
+  connections++
+  console.log('Connection opened (' + connections + ')', remoteInfo)
+
+  socket.on('close', function () {
+    connections--
+    console.log('Connection closed (' + connections + ')', remoteInfo)
+  })
+
   relay(node, new Stream(false, socket))
 })
 
@@ -43,6 +55,11 @@ goodbye(async function () {
   await close()
   await node.destroy()
 })
+
+function getRemoteAddress (req) {
+  if (behindProxy) return (req.headers['x-forwarded-for'] || '').split(',')[0].trim()
+  return req.socket.remoteAddress
+}
 
 function argv (name, type, defaultValue = null) {
   const i = process.argv.indexOf('--' + name)
