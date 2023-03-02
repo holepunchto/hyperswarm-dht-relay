@@ -43,7 +43,8 @@
     "safety-catch": "^1.0.1",
     "sodium-universal": "^3.0.4",
     "streamx": "^2.11.3",
-    "timeout-refresh": "^2.0.1"
+    "timeout-refresh": "^2.0.1",
+    "ws": "^8.12.1"
   },
   "devDependencies": {
     "@hyperswarm/testnet": "^3.0.0",
@@ -51,7 +52,6 @@
     "hypercore": "^10.0.0-alpha.34",
     "hyperswarm": "^4.0.1",
     "random-access-memory": "^6.1.0",
-    "standard": "^17.0.0",
-    "ws": "^8.2.2"
+    "standard": "^17.0.0"
   }
 }
