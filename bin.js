@@ -7,7 +7,6 @@ const DHT = require('@hyperswarm/dht')
 const { WebSocketServer } = require('ws')
 const { relay } = require('@hyperswarm/dht-relay')
 const Stream = require('@hyperswarm/dht-relay/ws')
-const graceful = require('graceful-http')
 const goodbye = require('graceful-goodbye')
 
 const behindProxy = argv('behind-proxy', Boolean)
@@ -28,17 +27,17 @@ if (ssl.key) ssl.key = fs.readFileSync(ssl.key) // eg privkey.pem
 const isSecure = ssl.cert && ssl.key
 const server = (isSecure ? https : http).createServer({ ...ssl })
 const wss = new WebSocketServer({ server })
-let connections = 0
+const connections = new Set()
 
 wss.on('connection', function (socket, req) {
   const remoteInfo = getRemoteAddress(req) + ':' + req.socket.remotePort
 
-  connections++
-  console.log('Connection opened (' + connections + ')', remoteInfo)
+  connections.add(socket)
+  console.log('Connection opened (' + connections.size + ')', remoteInfo)
 
   socket.on('close', function () {
-    connections--
-    console.log('Connection closed (' + connections + ')', remoteInfo)
+    connections.delete(socket)
+    console.log('Connection closed (' + connections.size + ')', remoteInfo)
   })
 
   relay(node, new Stream(false, socket))
@@ -49,16 +48,28 @@ server.listen(port, host, function () {
   console.log('Relay is listening at host', addr.address + ' (' + addr.family + ')', 'on port', addr.port)
 })
 
-const close = graceful(server)
-
 goodbye(async function () {
-  await close()
+  const closing = waitForClose(server)
+  server.close()
+
+  const promises = []
+  for (const socket of connections) {
+    promises.push(waitForClose(socket))
+    socket.terminate()
+  }
+
+  await Promise.all(promises)
+  await closing
   await node.destroy()
 })
 
 function getRemoteAddress (req) {
   if (behindProxy) return (req.headers['x-forwarded-for'] || '').split(',')[0].trim()
   return req.socket.remoteAddress
+}
+
+function waitForClose (emitter) {
+  return new Promise(resolve => emitter.once('close', resolve))
 }
 
 function argv (name, type, defaultValue = null) {

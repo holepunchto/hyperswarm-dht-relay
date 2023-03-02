@@ -38,7 +38,6 @@
     "compact-encoding-net": "^1.0.1",
     "events": "^3.3.0",
     "graceful-goodbye": "^1.2.1",
-    "graceful-http": "^1.0.0",
     "protomux": "^3.1.1",
     "safety-catch": "^1.0.1",
     "sodium-universal": "^3.0.4",
