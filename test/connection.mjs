@@ -86,7 +86,7 @@ test('connect to nonexisting key', (t) =>
     e.plan(1)
 
     b.connect(Buffer.alloc(32, 'public key')).once('error', (err) => {
-      e.is(err.message, 'Could not find peer')
+      e.is(err.message, 'PEER_NOT_FOUND: Peer not found')
     })
 
     await e

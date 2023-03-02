@@ -103,6 +103,19 @@ const dht = new DHT(new Stream(true, socket))
 ```
 </details>
 
+### CLI
+
+You can start a DHT relay in the command line:
+
+```sh
+npm install -g @hyperswarm/dht-relay
+```
+
+Run a DHT relay server:
+```sh
+dht-relay # [--port 49443] [--host 0.0.0.0] [--cert <path fullchain.pem>] [--key <path privkey.pem>]
+```
+
 ## Protocol
 
 A reference implementation of the relay protocol can be found in the [`lib/protocol.js`](lib/protocol.js) module. The protocol is versioned and built on top of <https://github.com/mafintosh/protomux>.

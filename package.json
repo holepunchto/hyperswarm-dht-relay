@@ -3,6 +3,9 @@
   "version": "0.3.0",
   "description": "Relaying the Hyperswarm DHT over framed streams to bring decentralized networking to everyone",
   "main": "./index.js",
+  "bin": {
+    "dht-relay": "./bin.js"
+  },
   "exports": {
     ".": "./index.js",
     "./tcp": "./tcp.js",
@@ -34,6 +37,8 @@
     "compact-encoding": "^2.6.1",
     "compact-encoding-net": "^1.0.1",
     "events": "^3.3.0",
+    "graceful-goodbye": "^1.2.1",
+    "graceful-http": "^1.0.0",
     "protomux": "^3.1.1",
     "safety-catch": "^1.0.1",
     "sodium-universal": "^3.0.4",
@@ -42,10 +47,10 @@
   },
   "devDependencies": {
     "@hyperswarm/testnet": "^3.0.0",
-    "brittle": "^2.2.7",
+    "brittle": "^3.2.1",
     "hypercore": "^10.0.0-alpha.34",
     "hyperswarm": "^4.0.1",
-    "random-access-memory": "^4.0.0",
+    "random-access-memory": "^6.1.0",
     "standard": "^17.0.0",
     "ws": "^8.2.2"
   }
