@@ -49,16 +49,17 @@ server.listen(port, host, function () {
 })
 
 goodbye(async function () {
+  const termination = []
   const closing = waitForClose(server)
+
   server.close()
 
-  const promises = []
   for (const socket of connections) {
-    promises.push(waitForClose(socket))
+    termination.push(waitForClose(socket))
     socket.terminate()
   }
 
-  await Promise.all(promises)
+  await Promise.all(termination)
   await closing
   await node.destroy()
 })
