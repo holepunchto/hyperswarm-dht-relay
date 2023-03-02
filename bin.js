@@ -88,7 +88,7 @@ function argv (name, type, defaultValue = null) {
       return value
     }
 
-    if (type === String) return (value || '').toString()
+    if (type === String) return value
 
     throw new Error('Invalid CLI type for argument --' + name)
   }
