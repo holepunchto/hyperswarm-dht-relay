@@ -75,9 +75,8 @@ function waitForClose (emitter) {
 
 function argv (name, type, defaultValue = null) {
   const i = process.argv.indexOf('--' + name)
+  if (type === Boolean) return i > -1
   if (i === -1) return defaultValue
-
-  if (type === Boolean) return true
 
   const hasValue = i < process.argv.length - 1
   if (hasValue) {
