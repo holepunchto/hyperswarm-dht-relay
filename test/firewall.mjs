@@ -32,7 +32,7 @@ test('firewall deny', (t) =>
     const socket = b.connect(server.publicKey)
 
     socket.once('error', (err) => {
-      connect.is(err.message, 'Could not connect to peer')
+      connect.is(err.message, 'PEER_CONNECTION_FAILED: Could not connect to peer')
     })
 
     await connect
@@ -57,7 +57,7 @@ test('throw in firewall hook', (t) =>
     const socket = b.connect(server.publicKey)
 
     socket.once('error', (err) => {
-      connect.is(err.message, 'Could not connect to peer')
+      connect.is(err.message, 'PEER_CONNECTION_FAILED: Could not connect to peer')
     })
 
     await connect
