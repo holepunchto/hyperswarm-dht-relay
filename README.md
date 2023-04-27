@@ -15,7 +15,7 @@ npm install @hyperswarm/dht-relay
 On the relaying side:
 
 ```js
-import DHT from '@hyperswarm/dht'
+import DHT from 'hyperdht'
 import { relay } from '@hyperswarm/dht-relay'
 
 relay(new DHT(), stream)
@@ -29,7 +29,7 @@ import DHT from '@hyperswarm/dht-relay'
 const dht = new DHT(stream)
 ```
 
-From here, the API matches that of the Hyperswarm DHT: <https://github.com/hyperswarm/dht#api>
+From here, the API matches that of the Hyperswarm DHT: <https://github.com/holepunchto/hyperdht#api>
 
 ### Transports
 
@@ -38,14 +38,14 @@ As a convenience, we provide stream wrappers for common transport protocols. The
 <details>
 <summary>TCP</summary>
 
-The TCP wrapper is a re-export of <https://github.com/hyperswarm/secret-stream> which adds both framing and encryption.
+The TCP wrapper is a re-export of <https://github.com/holepunchto/hyperswarm-secret-stream> which adds both framing and encryption.
 
 On the relaying side:
 
 ```js
 import net from 'net'
 
-import DHT from '@hyperswarm/dht'
+import DHT from 'hyperdht'
 import { relay } from '@hyperswarm/dht-relay'
 import Stream from '@hyperswarm/dht-relay/tcp'
 
@@ -80,7 +80,7 @@ On the relaying side:
 ```js
 import { WebSocketServer } from 'ws'
 
-import DHT from '@hyperswarm/dht'
+import DHT from 'hyperdht'
 import { relay } from '@hyperswarm/dht-relay'
 import Stream from '@hyperswarm/dht-relay/ws'
 

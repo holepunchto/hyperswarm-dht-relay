@@ -3,7 +3,7 @@
 const http = require('http')
 const https = require('https')
 const fs = require('fs')
-const DHT = require('@hyperswarm/dht')
+const DHT = require('hyperdht')
 const { WebSocketServer } = require('ws')
 const { relay } = require('@hyperswarm/dht-relay')
 const Stream = require('@hyperswarm/dht-relay/ws')
