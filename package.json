@@ -1,6 +1,6 @@
 {
   "name": "@hyperswarm/dht-relay",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Relaying the Hyperswarm DHT over framed streams to bring decentralized networking to everyone",
   "main": "./index.js",
   "bin": {
