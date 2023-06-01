@@ -1,4 +1,4 @@
-import createTestnet from '@hyperswarm/testnet'
+import createTestnet from 'hyperdht/testnet.js'
 
 export async function withDHT (cb) {
   const testnet = await createTestnet(4)

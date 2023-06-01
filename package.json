@@ -38,7 +38,7 @@
     "compact-encoding-net": "^1.0.1",
     "events": "^3.3.0",
     "graceful-goodbye": "^1.2.1",
-    "hyperdht": "^6.5.2",
+    "hyperdht": "^6.6.0",
     "protomux": "^3.1.1",
     "safety-catch": "^1.0.1",
     "sodium-universal": "^4.0.0",
@@ -47,7 +47,6 @@
     "ws": "^8.12.1"
   },
   "devDependencies": {
-    "@hyperswarm/testnet": "^3.0.0",
     "brittle": "^3.2.1",
     "hypercore": "^10.0.0-alpha.34",
     "hyperswarm": "^4.0.1",
