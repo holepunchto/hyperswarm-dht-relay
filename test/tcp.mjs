@@ -6,7 +6,7 @@ import { withRelay } from './helpers/tcp/with-relay.mjs'
 test('tcp', (t) =>
   withDHT((a) => withRelay(a, (withDHT) => withDHT(async (b) => {
     const connect = t.test('connect')
-    connect.plan(1)
+    connect.plan(2)
 
     const io = t.test('read and write')
     io.plan(2)
@@ -17,6 +17,7 @@ test('tcp', (t) =>
     const socket = b.connect(server.publicKey)
 
     socket.once('open', () => {
+      connect.alike(socket.publicKey, b.defaultKeyPair.publicKey)
       connect.alike(socket.remotePublicKey, server.publicKey)
 
       socket

@@ -9,7 +9,7 @@ test('client mode', (t) =>
     t.comment(`custodial = ${options.custodial}`)
 
     const connect = t.test('connect')
-    connect.plan(3)
+    connect.plan(6)
 
     const io = t.test('read and write')
     io.plan(2)
@@ -22,6 +22,7 @@ test('client mode', (t) =>
     socket
       .once('connect', () => connect.pass('client connected'))
       .once('open', () => {
+        connect.alike(socket.publicKey, b.defaultKeyPair.publicKey)
         connect.alike(socket.remotePublicKey, server.publicKey)
 
         socket
@@ -31,6 +32,8 @@ test('client mode', (t) =>
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
+      connect.alike(socket.publicKey, server.publicKey)
+      connect.alike(socket.remotePublicKey, b.defaultKeyPair.publicKey)
 
       socket.once('data', (data) => {
         io.alike(data.toString(), 'ping')
@@ -47,7 +50,7 @@ test('server mode', (t) =>
     t.comment(`custodial = ${options.custodial}`)
 
     const connect = t.test('connect')
-    connect.plan(3)
+    connect.plan(6)
 
     const io = t.test('read and write')
     io.plan(2)
@@ -60,6 +63,7 @@ test('server mode', (t) =>
     socket
       .once('connect', () => connect.pass('client connected'))
       .once('open', () => {
+        connect.alike(socket.publicKey, a.defaultKeyPair.publicKey)
         connect.alike(socket.remotePublicKey, server.publicKey)
 
         socket
@@ -69,6 +73,8 @@ test('server mode', (t) =>
 
     server.once('connection', (socket) => {
       connect.pass('server connected')
+      connect.alike(socket.publicKey, server.publicKey)
+      connect.alike(socket.remotePublicKey, a.defaultKeyPair.publicKey)
 
       socket.once('data', (data) => {
         io.alike(data.toString(), 'ping')
