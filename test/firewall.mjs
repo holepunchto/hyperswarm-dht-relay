@@ -14,6 +14,7 @@ test('firewall deny', (t) =>
     const server = b.createServer({
       firewall (remotePublicKey, remoteNoisePayload) {
         connect.alike(remotePublicKey, socket.publicKey)
+        connect.alike(server.publicKey, socket.remotePublicKey)
 
         const {
           version,
