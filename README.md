@@ -159,7 +159,6 @@ _Empty_
 4.  `fixed(32)` The public key of the remote peer
 5.  (if `custodial` is set) `fixed(64)` The Noise handshake hash
 6.  (if `custodial` is not set) `uint32` The ID of the Noise handshake session
-7.  `fixed(32)` The public key of the local peer
 
 #### `connected` (`5`)
 
