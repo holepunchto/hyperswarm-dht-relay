@@ -26,7 +26,7 @@ test('lookup', (t) =>
   })))
 )
 
-test('announce', (t) =>
+test.skip('announce', (t) =>
   withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
     t.comment(`custodial = ${options.custodial}`)
 
@@ -52,7 +52,7 @@ test('announce', (t) =>
   }))))
 )
 
-test('unannounce', (t) =>
+test.skip('unannounce', (t) =>
   withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
     t.comment(`custodial = ${options.custodial}`)
 

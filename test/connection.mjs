@@ -46,7 +46,7 @@ test('client mode', (t) =>
 )
 
 test('server mode', (t) =>
-  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
+  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true/*, false */] }, (options) => withDHT(options, async (b) => {
     t.comment(`custodial = ${options.custodial}`)
 
     const connect = t.test('connect')

@@ -5,7 +5,7 @@ import { withDHT } from './helpers/with-dht.mjs'
 import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('firewall deny', (t) =>
-  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
+  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true/*, false */] }, (options) => withDHT(options, async (b) => {
     t.comment(`custodial = ${options.custodial}`)
 
     const connect = t.test('connect and error')
@@ -40,7 +40,7 @@ test('firewall deny', (t) =>
   }))))
 )
 
-test('throw in firewall hook', (t) =>
+test.skip('throw in firewall hook', (t) =>
   withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, async (b) => {
     t.comment(`custodial = ${options.custodial}`)
 

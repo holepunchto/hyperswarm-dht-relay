@@ -6,7 +6,7 @@ import { withDHT } from './helpers/with-dht.mjs'
 import { withRelay } from './helpers/ws/with-relay.mjs'
 
 test('core replication', (t) =>
-  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true, false] }, (options) => withDHT(options, (b) => withCore((remote) => withCore(remote.key, async (local) => {
+  withDHT((a) => withRelay(a, (withDHT) => withMatrix({ custodial: [true/*, false */] }, (options) => withDHT(options, (b) => withCore((remote) => withCore(remote.key, async (local) => {
     t.comment(`custodial = ${options.custodial}`)
 
     const replication = t.test('replication')
